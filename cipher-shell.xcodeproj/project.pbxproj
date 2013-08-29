@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		0527ACF917C1CF7E00D50113 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0527ACF817C1CF7E00D50113 /* main.c */; };
 		0527ACFB17C1CF7E00D50113 /* cipher_shell.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0527ACFA17C1CF7E00D50113 /* cipher_shell.1 */; };
+		0554B42A17CAFF13009A7A83 /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B42917CAFF13009A7A83 /* parser.cpp */; };
+		0554B42C17CAFF9F009A7A83 /* eval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B42B17CAFF9F009A7A83 /* eval.cpp */; };
+		0554B43917CC48EA009A7A83 /* lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B42E17CC48EA009A7A83 /* lib.cpp */; };
+		0554B43A17CC48EA009A7A83 /* list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B43017CC48EA009A7A83 /* list.cpp */; };
+		0554B43B17CC48EA009A7A83 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B43217CC48EA009A7A83 /* matrix.cpp */; };
+		0554B43C17CC48EA009A7A83 /* tokenizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B43317CC48EA009A7A83 /* tokenizer.cpp */; };
+		0554B43D17CC48EA009A7A83 /* value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B43417CC48EA009A7A83 /* value.cpp */; };
+		0554B43E17CC48EA009A7A83 /* vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0554B43617CC48EA009A7A83 /* vector.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +36,21 @@
 		0527ACF517C1CF7E00D50113 /* cipher-shell */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cipher-shell"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0527ACF817C1CF7E00D50113 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		0527ACFA17C1CF7E00D50113 /* cipher_shell.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = cipher_shell.1; sourceTree = "<group>"; };
+		0554B42817CAF181009A7A83 /* ciph.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = ciph.h; sourceTree = "<group>"; };
+		0554B42917CAFF13009A7A83 /* parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parser.cpp; sourceTree = "<group>"; };
+		0554B42B17CAFF9F009A7A83 /* eval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = eval.cpp; sourceTree = "<group>"; };
+		0554B42D17CC48EA009A7A83 /* eval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eval.h; sourceTree = "<group>"; };
+		0554B42E17CC48EA009A7A83 /* lib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lib.cpp; sourceTree = "<group>"; };
+		0554B42F17CC48EA009A7A83 /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lib.h; sourceTree = "<group>"; };
+		0554B43017CC48EA009A7A83 /* list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = list.cpp; sourceTree = "<group>"; };
+		0554B43117CC48EA009A7A83 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		0554B43217CC48EA009A7A83 /* matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matrix.cpp; sourceTree = "<group>"; };
+		0554B43317CC48EA009A7A83 /* tokenizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tokenizer.cpp; sourceTree = "<group>"; };
+		0554B43417CC48EA009A7A83 /* value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = value.cpp; sourceTree = "<group>"; };
+		0554B43517CC48EA009A7A83 /* value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = value.h; sourceTree = "<group>"; };
+		0554B43617CC48EA009A7A83 /* vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vector.cpp; sourceTree = "<group>"; };
+		0554B43717CC48EA009A7A83 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		0554B43817CC48EA009A7A83 /* y.tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = y.tab.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +84,21 @@
 			isa = PBXGroup;
 			children = (
 				0527ACF817C1CF7E00D50113 /* main.c */,
+				0554B42817CAF181009A7A83 /* ciph.h */,
+				0554B42917CAFF13009A7A83 /* parser.cpp */,
+				0554B42D17CC48EA009A7A83 /* eval.h */,
+				0554B42E17CC48EA009A7A83 /* lib.cpp */,
+				0554B42F17CC48EA009A7A83 /* lib.h */,
+				0554B43017CC48EA009A7A83 /* list.cpp */,
+				0554B43117CC48EA009A7A83 /* list.h */,
+				0554B43217CC48EA009A7A83 /* matrix.cpp */,
+				0554B43317CC48EA009A7A83 /* tokenizer.cpp */,
+				0554B43417CC48EA009A7A83 /* value.cpp */,
+				0554B43517CC48EA009A7A83 /* value.h */,
+				0554B43617CC48EA009A7A83 /* vector.cpp */,
+				0554B43717CC48EA009A7A83 /* vector.h */,
+				0554B43817CC48EA009A7A83 /* y.tab.h */,
+				0554B42B17CAFF9F009A7A83 /* eval.cpp */,
 				0527ACFA17C1CF7E00D50113 /* cipher_shell.1 */,
 			);
 			path = "cipher-shell";
@@ -118,6 +156,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0527ACF917C1CF7E00D50113 /* main.c in Sources */,
+				0554B42A17CAFF13009A7A83 /* parser.cpp in Sources */,
+				0554B42C17CAFF9F009A7A83 /* eval.cpp in Sources */,
+				0554B43917CC48EA009A7A83 /* lib.cpp in Sources */,
+				0554B43A17CC48EA009A7A83 /* list.cpp in Sources */,
+				0554B43B17CC48EA009A7A83 /* matrix.cpp in Sources */,
+				0554B43C17CC48EA009A7A83 /* tokenizer.cpp in Sources */,
+				0554B43D17CC48EA009A7A83 /* value.cpp in Sources */,
+				0554B43E17CC48EA009A7A83 /* vector.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +262,7 @@
 				0527AD0017C1CF7E00D50113 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
