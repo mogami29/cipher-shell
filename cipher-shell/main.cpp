@@ -15,16 +15,16 @@
 jmp_buf jmpEnv;
 
 void assert_func(const char* file, int line){
-	extern char*ptr;
 	scroll();
+	//extern char*ptr;
     //	print_str(ptr); scroll();
 	myPrintf("assertion failure line %d in %s.",line,file);
 	longjmp(jmpEnv, 1);
 }
 
 void error_func(const char *str, const char* file, int line){
-	extern char*ptr;
 	scroll();
+	//extern char*ptr;
     //	print_str(ptr); scroll();
 	myPrintf("error: %s occured in line %d of file %s\n",str, line, file);
 	longjmp(jmpEnv, 1);
