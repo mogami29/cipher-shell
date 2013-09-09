@@ -35,23 +35,42 @@ void exit2shell(){
 }
 
 //-----
-int main(int argc, const char * argv[]){
 
-    // insert code here...
-    printf("Hello, World!\n");
-    return 0;
-/*
-	interpreter = create_interpreter();
+Interpreter	interpreter;
+
+int main(int argc, const char * argv[]){
+    char str[256];
     
-	while(1) {
-		if(setjmp(jmpEnv)==0){	//try
-			HandleEvent();
-		} else {				//catch
-			scrollBy(FONTSIZE*2);
-			newLine();
-		}
-	}
-	dispose_interpreter(interpreter);
-*/
+    interpreter = create_interpreter();
+    while(1) {
+        if(setjmp(jmpEnv)==0){	//try
+            fgets(str, 255, stdin);
+            interpret(interpreter, str);
+        } else {				//catch
+        //    scrollBy(FONTSIZE*2);
+        //    newLine();
+        }
+    }
+    dispose_interpreter(interpreter);
+
+    //printf("Hello, World!\n");
+    return 0;
 }
 
+void scroll(){
+    printf("\n");
+}
+
+
+#include <stdarg.h>
+
+void myPrintf(const char *fmt,...){
+	va_list	ap;
+//	char str[256];
+	
+    va_start(ap,fmt);
+	if (fmt) {
+		vprintf(fmt, ap);
+	}
+	va_end(ap);
+}
