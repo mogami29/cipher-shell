@@ -1,7 +1,7 @@
 #define	INT_LITERAL	257
 #define	DBL_LITERAL	258
 #define	IDENTIFIER	259
-
+ 
 #define	IF		261
 #define	ELSE	262
 #define BREAK	268
