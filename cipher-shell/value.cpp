@@ -854,6 +854,7 @@ obj divide(obj lt, obj rt){
         return v;
     }
     assert(0);
+    return nil;
 }
 
 obj power(obj lt, obj rt) {
