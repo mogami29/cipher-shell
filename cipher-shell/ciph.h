@@ -56,7 +56,7 @@ void appendS(string* s, int c);// in tokenizer.c
 void freestr(string* s);	// in tokenizer.c
 char*next(char* st);		// in tokenizer.c
 int readchar(char* st);		// in tokenizer.c
-bool get_pat(unsigned char**pp, char* s);	//get pattern in tokenizer.c
+bool get_pat(unsigned char**pp, const char* s);	//get pattern in tokenizer.c
 
 // in value.c
 obj retain(obj);	
