@@ -8,10 +8,10 @@
 
 static L pool2 = nil;
 
-#define NODESIZE 16
+#define NODESIZE sizeof(node<obj>)  //still have trouble if larger thing than pointer is put
 
-//template <class T>
-L node_alloc(){
+template <class T> node<T>* node_alloc(){
+//L node_alloc(){
 	L nn;
 	if(pool2){
 		nn = pool2;
@@ -45,8 +45,9 @@ template <class T> void node<T>::operator delete(void* n, size_t size){
 	pool2 = (node*)n;
 }
 */
+
 L cons(obj v, L l){
-	L nn = node_alloc();
+	L nn = node_alloc<obj>();
 //	L nn = new node<T>();
 	nn->a = v;
 	nn->d = l;
@@ -99,14 +100,14 @@ L* rest(L* l, int n){
 }
 
 //nodeê∂ê¨îjâÛÇ…ä÷ÇÌÇÈÇÃÇÕÅAcons, free, surface_free, copyList, take
-//template <class T>
+//template <class T> node<T>* copy(node<T>* s){
 L copy(L s){	//surface copy
 	L dest;
 	L* prev;
 
 	prev = &dest;
 	for(; s; s=rest(s)){
-		L nn = node_alloc();
+		L nn = node_alloc<obj>();
 	//	L nn = new node();
 		nn->a = retain(s->a);
 		*prev = nn;
