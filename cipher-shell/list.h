@@ -32,7 +32,7 @@ template <class T> node<T>* node_alloc();
 //L	node_alloc();
 void 	node_free(L p);
 L 	cons(obj v, L l);
-inline L retain(L l){ l->refcount++; return l;}
+inline L retain(L l){if(l) l->refcount++; return l;}
 void	release(L l);
 L 	copy(L source);
 obj* 	last(L l);
