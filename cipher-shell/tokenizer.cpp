@@ -211,7 +211,7 @@ obj yylex(){
 	if(get(CR)) return Token(CR);
 	if(get('"')){			//•¶Žš—ñƒŠƒeƒ‰ƒ‹
 		s=nullstr();
-		while(c= read()) {
+		while((c = read())) {
 			step();
 	    	if(c == '"') break;
 	    	if(c == '\\') {
