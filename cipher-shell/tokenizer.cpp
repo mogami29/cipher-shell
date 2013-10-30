@@ -63,7 +63,8 @@ char* next(char* st){
 }
 
 int readchar(char* st){
-	if(*st & 0x80) return *((unsigned short*)st);
+	//if(*st & 0x80) return *((unsigned short*)st);
+	if(*st & 0x80) return (((int)*(unsigned char*)st)<< 8) + (((int)*(unsigned char*)(st+1)));
 	else return *(unsigned char*)st;
 }
 
