@@ -1023,6 +1023,7 @@ static obj transpose(obj v){
 static obj readLine(obj v){
     error("classic: not implemented");
     //	return editline(String2v(""));
+    return nil;
 }
 
 /*static obj editLine(obj v){
