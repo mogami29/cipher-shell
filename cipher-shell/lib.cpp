@@ -403,7 +403,7 @@ static obj plot(obj v){
     }
 #ifdef GUI
 	scrollBy(200);
-	ar->type = tLine;
+	ar->type = tPlot;
 	addObjToText(ar);
 	//showline(ar);
 	scroll();

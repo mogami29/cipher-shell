@@ -94,8 +94,8 @@ typedef enum {
 	tIns,		// list
 	tDel,		// intv
 	tMove,	// list
-	tLine,		// dbl_arr
-	tLast		// 52
+	tPlot,	// dbl_arr
+	tLast	// 52
 } ValueType;
 
 //struct value {
