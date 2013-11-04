@@ -373,14 +373,6 @@ static obj min(obj v){
     }
 }
 
-void showline(obj y){
-	//Classic Point pt;
-	//Classic GetPen(&pt);
-	//Classic int baseLine = pt.v;
-	//Classic MoveTo(10, baseLine-udar(y).v[0]);
-	//Classic for(int i=1; i< udar(y).size; i++) LineTo(10+i*3, baseLine-udar(y).v[i]);
-}
-
 static obj plot(obj v){
 	double u,d;
 	int n;
@@ -409,11 +401,13 @@ static obj plot(obj v){
 		error("plot: argument must be an array or a dbl array.");
         return nil;
     }
-	//Classic scrollBy(200);
+#ifdef GUI
+	scrollBy(200);
 	ar->type = tLine;
-	//Classic addObjToText(ar);
-	//Classic showline(ar);
-	//Classic scroll();
+	addObjToText(ar);
+	//showline(ar);
+	scroll();
+#endif
 	return nil;
 }
 

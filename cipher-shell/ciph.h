@@ -27,7 +27,9 @@ void dispose_interpreter(Interpreter interpreter);
 #define GLOBAL extern
 #endif
 
-void	scroll();			// in main.c
+void	scroll();               // in appSpeci.c
+void    scrollBy(int pixels);   // in appSpeci.c
+void    addObjToText(struct value* line);	// in appSpeci.c, taking obj
 void 	assert_func(const char* file, int line);
 void 	error_func(const char *str, const char* file, int line);
 void 	exit2shell();
