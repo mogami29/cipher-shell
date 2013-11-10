@@ -194,11 +194,13 @@ static obj func_def(obj name, obj params, obj expr) {
 		if(fn) let(func, tag(fn));
 	}
 	list lam = list3(retain(params), retain(expr), nil);
-	if(type(*func)==tClosure){			// free if complete overload, in the future
-		lam = merge(lam, retain(ul(*func)));
-	} else if(type(*func)==tInternalFn){
-		lam = merge(lam, list3(retain(*func), nil, nil));
-	}
+    if(*func){
+        if(type(*func)==tClosure){			// free if complete overload, in the future
+            lam = merge(lam, retain(ul(*func)));
+        } else if(type(*func)==tInternalFn){
+            lam = merge(lam, list3(retain(*func), nil, nil));
+        }
+    }
 	return retain(*let(func, render(tClosure, lam)));
 }
 
