@@ -16,10 +16,12 @@ typedef struct value*	rel;
 /*/template <class T> class node;
 typedef node<obj>* list;/**/
 
+extern "C" {
 typedef struct Interpreter_* Interpreter;
 Interpreter create_interpreter(void);
 void interpret(Interpreter interpreter, char* line);
 void dispose_interpreter(Interpreter interpreter);
+}   // Extern C
 
 #ifdef GLOBAL_VARIABLE_DEFINE
 #define GLOBAL
