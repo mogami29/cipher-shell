@@ -186,7 +186,7 @@ char* merge(const char* s1, const char* s2){
 	return s;
 }
 
-#define defaultDIR "/Users/mogami/"
+#define defaultDIR "/Users/mogami/Documents/"
 #define NUL 0
 #define CR '\n'
 
