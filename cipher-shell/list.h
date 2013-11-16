@@ -8,10 +8,10 @@
 template <class T> class node {
 //class node {
 public:
-	obj	a;
 //	node* d;
 	node<T>* d;
 	int	refcount;
+	T	a;
 	void*operator new(size_t size);
 	void operator delete(void* val, size_t size);
 }; 
