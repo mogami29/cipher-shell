@@ -387,9 +387,9 @@ obj copy(obj v){		//surface copy
 		uref(r) = copy(uref(v));
 		return r;
 	case STRING:
-		return String2v(ustr(v));
+		return val(copyString(ustr(v)));
 	case tSymbol:
-		r = String2v(ustr(v));
+		r = val(copyString(ustr(v)));
 		r->type = tSymbol;
 		return r;
 	}

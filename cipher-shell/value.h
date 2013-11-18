@@ -215,7 +215,7 @@ obj Token(int i);
 double v2Double(obj v);	//cast to double
 char* copyString(const char* str);
 str_* val(char* str);
-inline obj String2v(const char* s){return val(copyString(s));}
+//inline obj String2v(const char* s){return val(copyString(s));}
 obj cString(const char* st, const char* en);
 obj aString(int n);	//alloc string
 obj Symbol(const char* s);
