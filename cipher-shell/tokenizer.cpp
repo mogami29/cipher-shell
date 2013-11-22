@@ -29,9 +29,7 @@ void appendB(string* s, int c){
 	char* p = s->s;
 	int len = s->size;
 	if(len+1 >= ALLOCUNIT && is2n(len+1)){
-		p = (char*)malloc((len+1)*2);
-		strcpy(p, s->s);	//(dest, source)
-		free(s->s);
+        p = (char*)realloc (p, (len+1)*2);
 		s->s = p;
 	}
 	*(p+len) = c;
