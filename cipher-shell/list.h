@@ -40,7 +40,6 @@ obj 	take(L* l, int n);
 obj	pop(L* lp);
 L 	reverse(L lp);//”j‰ó“I
 
-obj 	listToCString(list l);	// in appSpeci.c
 list	list1(obj v);
 list	list2(obj v1, obj v2);
 list	list3(obj v1, obj v2, obj v3);
