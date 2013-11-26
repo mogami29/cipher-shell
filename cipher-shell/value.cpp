@@ -300,6 +300,7 @@ inline void free_v(obj v){
 
 void release(obj v){
 	if(! v) return;
+    if((long)v & dVal) return;
 	if(v->refcount -1) {v->refcount--; return;}
 //	if(v->refcount -1) {v->refcount = v->refcount -1; return;}
 	free_v(v);
