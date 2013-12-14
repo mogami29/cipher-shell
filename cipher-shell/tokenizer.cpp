@@ -55,7 +55,7 @@ bool get_pat(unsigned char**pp, const char* s){	//get pattern
 }
 //----- multibyte aware
 
-char* next(char* st){
+/*char* next(char* st){
 	if(*st & 0x80) return st+2;
 	else return st+1;
 }
@@ -64,6 +64,12 @@ int readchar(char* st){
 	//if(*st & 0x80) return *((unsigned short*)st);
 	if(*st & 0x80) return (((int)*(unsigned char*)st)<< 8) + (((int)*(unsigned char*)(st+1)));
 	else return *(unsigned char*)st;
+}*/
+int readchar(char* st){    // UTF8
+    return *(unsigned char*)st;
+}
+char* next(char* st){    // UTF8
+	return st+1;
 }
 
 //--------------------
