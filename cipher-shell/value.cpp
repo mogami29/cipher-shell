@@ -434,36 +434,6 @@ void print_matrix(DblArr2 m){
 }
 
 void print_image(obj v){
-	/*Classic
-    Point pt;
-	GetPen(&pt);
-
-	int baseLine=pt.v;
-	RGBColor color;
-	if(type(v)==IMAGE){
-		for(int i=0; i< uar(v).size; i++){
-			obj row = uar(v).v[i];
-			assert(type(row)==tDblArray);
-			for(int j=0; j < udar(row).size; j++){
-				color.red=color.green=color.blue=0xffff*(larger(0,smaller(1,udar(row).v[j])));
-				SetCPixel(LEFTMARGIN+j, baseLine-i, &color);
-			}
-		}
-	} else if(type(v)==tCImg){
-		for(int i=0; i< uar(uar(v).v[0]).size; i++){
-			assert(uar(v).v[0]->type==tArray);
-			obj rowr = uar(uar(v).v[0]).v[i];
-			obj rowg = uar(uar(v).v[1]).v[i];
-			obj rowb = uar(uar(v).v[2]).v[i];
-			assert(type(rowr)==tDblArray);
-			for(int j=0; j< udar(rowr).size; j++){
-				color.red	=0xffff*(udar(rowr).v[j]);
-				color.green	=0xffff*(udar(rowg).v[j]);
-				color.blue	=0xffff*(udar(rowb).v[j]);
-				SetCPixel(LEFTMARGIN+j, baseLine-i, &color);
-			}
-		}
-	} else */assert(0);
 }
 
 void print_seq(list l, const char* delimeter){
@@ -544,12 +514,9 @@ void print(obj v){
 	case IMAGE:
 	case tCImg:
 		myPrintf("Image");
-		if(type(v)==IMAGE){
-			//Classic scrollBy(uar(v).size);
-		} else if(type(v)==tCImg){
-			//Classic scrollBy(uar(uar(v).v[0]).size);
-		}
-		//Classic addObjToText(retain(v));
+#ifdef GUI
+        addObjToText(retain(v));
+#endif
 		print_image(v);
 		return;
 	case STRING:
