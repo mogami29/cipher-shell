@@ -35,7 +35,7 @@ obj alloc(){
 	if(!pool) fill_pool();
 	obj r = pool;
 	pool = cdr(pool);
-//	r->refcount = 1;
+	r->refcount = 1;
 //	assert(r->refcount == 1);
 	return r;
 }
@@ -302,7 +302,6 @@ void release(obj v){
 	if(! v) return;
     if((long)v & dVal) return;
 	if(v->refcount -1) {v->refcount--; return;}
-//	if(v->refcount -1) {v->refcount = v->refcount -1; return;}
 	free_v(v);
 	cdr(v) = pool;
 	pool = v;
@@ -402,6 +401,7 @@ obj copy(obj v){		//surface copy
 void print_vector(DblArray v){
 	double *p = v.v;
 	for(int i=0; i<v.size; i++){
+        if(i>5) {myPrintf("..."); break;}
 		myPrintf("%g ",*p++);
 	}
 }
@@ -415,6 +415,7 @@ void print_intarr(IntArr v){
 
 void print_array(Array v){
 	for(int i=0; i<v.size;){
+        if(i>5) {myPrintf("..."); break;}
 		print(v.v[i]);
 		myPrintf(" ");
 		i++;
