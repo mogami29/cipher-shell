@@ -136,13 +136,13 @@ static obj Hash(obj v){
 	return rr;
 }
 
-//Classic static short fileRefNum;
+static FILE* fileRef;
 
 static obj fseek(obj vi){
 	obj num= req_one(vi);
 	if(type(num) != INT) error("fseek: argument must be an int.");
     
-	//Classic SetFPos(fileRefNum, fsFromStart, uint(num));//fsFromMark
+    fseek(fileRef, uint(num), SEEK_SET);
 	return nil;
 }
 
@@ -150,7 +150,7 @@ static obj readUShort(obj num){
 	if(type(num) != INT) error("read: argument must be an int.");
 	long bytes = uint(num)*sizeof(unsigned short);
 	unsigned short* buf = (unsigned short *)malloc(bytes);
-	//Classic FSRead(fileRefNum, &bytes, buf);
+    fread(buf, sizeof(unsigned short), bytes, fileRef);
 	obj r = vector(uint(num));
 	for(int i=0; i < uint(num); i++) udar(r).v[i] = (double) buf[i];
 	free(buf);
@@ -161,7 +161,7 @@ static obj readChar(obj num){
 	if(type(num) != INT) error("read: argument must be an int.");
 	long bytes = uint(num)*sizeof(char);
 	unsigned char* buf = (unsigned char *)malloc(bytes);
-	//Classic FSRead(fileRefNum, &bytes, buf);
+    fread(buf, sizeof(unsigned char), bytes, fileRef);
 	obj r = intArray(uint(num));
 	for(int i=0; i < uint(num); i++) uiar(r).v[i] = buf[i];	
 	free(buf);
@@ -172,7 +172,7 @@ static obj readDouble(obj num){
 	if(type(num) != INT) error("read: argument must be an int.");
  	long bytes = uint(num)*sizeof(double);	
 	double* buf = (double *)malloc(bytes);
-	//Classic FSRead(fileRefNum, &bytes, buf);
+    fread(buf, sizeof(double), bytes, fileRef);
 	obj r = vector(uint(num));
 	for(int i=0; i < uint(num); i++) udar(r).v[i] = buf[i];	
 	free(buf);
@@ -192,20 +192,20 @@ char* merge(const char* s1, const char* s2){
 
 obj open(obj vi){
 	obj fileName= req_one(vi);
-	//Classic OSErr fs_er;
-	error("not implemented yet");
 	if(type(fileName) != STRING) error("open: file name must be a string.");
+#ifdef DEBUG
 	char* fn = merge(defaultDIR, ustr(fileName));
-	//Classic CtoPstr(fn);
-	//Classic fs_er = HOpenDF(0, fsRtDirID, (StringPtr)fn, fsRdPerm, &fileRefNum);
-	//Classic if(fs_er) error("Cannot open the file.");
+	fileRef = fopen(fn, "r");
 	free(fn);
+#else
+    fileRef = fopen(ustr(fileName), "r");
+#endif
+	if(fileRef == NULL) error("Cannot open the file.");
 	return nil;
 }
 
 obj close(obj v){
-	//Classic FSClose(fileRefNum);
-	error("not implemented yet");
+	fclose(fileRef);
 	return nil;
 }
 
