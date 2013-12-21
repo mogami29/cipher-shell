@@ -128,8 +128,8 @@ static obj find_var(obj id){
 }
 
 /*static obj lfind_local(obj e, obj id, obj* *rv){	// assume e!=nil
-// rv‚ÍŒ©‚Â‚©‚Á‚½‚Íset, Œ©‚Â‚©‚ç‚È‚¯‚ê‚Înil
-// return‚ÍŒ©‚Â‚©‚Á‚Ä‚©‚ÂƒRƒs[‚ª•K—v‚È‚Ì‚İnon-nil
+// rvã¯è¦‹ã¤ã‹ã£ãŸæ™‚ã¯set, è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°nil
+// returnã¯è¦‹ã¤ã‹ã£ã¦ã‹ã¤ã‚³ãƒ”ãƒ¼ãŒå¿…è¦ãªæ™‚ã®ã¿non-nil
 	obj* v = left_search_assoc(car(e), id);
 	if (v) {
 		if(e->refcount ==1) {*rv=v; return nil;}
@@ -241,7 +241,7 @@ static obj do_assign(obj lt, obj rt){
 	return nil;
 }
 
-static bool bind_vars(obj* vars, obj lt, obj rt){	//‚¾‚ß‚È‚çfalse‚ğ‚©‚¦‚·B
+static bool bind_vars(obj* vars, obj lt, obj rt){
 	obj utype;
 	switch(lt->type){
 	case tSymbol:
@@ -275,7 +275,7 @@ static bool bind_vars(obj* vars, obj lt, obj rt){	//‚¾‚ß‚È‚çfalse‚ğ‚©‚¦‚·B
 	return nil;
 }
 
-static bool pbind_vars(obj* vars, obj lt){	//‚¾‚ß‚È‚çfalse‚ğ‚©‚¦‚·B
+static bool pbind_vars(obj* vars, obj lt){
 	obj utype;
 	switch(lt->type){
 	case tSymbol:
@@ -364,14 +364,14 @@ obj udef_op0(obj ope, obj v){
 	bind_vars(&vars, first(ll), v);
 	push(env);
 	env = op(vars, retain(third(ll)));
-	release(lamb);	//exec‚Ì‚È‚©‚Ålamb‚ªíœ‚³‚ê‚é‰Â”\«‚ ‚è
+	release(lamb);	//execÃ‡ÃƒÃ‡Â»Ã‡Â©Ã‡â‰ˆlambÃ‡â„¢Ã§ÃŒÃ¨ÃºÃ‡â‰¥Ã‡ÃÃ‡ÃˆÃ¢Â¬Ã®\ÃªÂ´Ã‡â€ Ã‡Ã‹
 	obj rr = exec(second(ll));
 	release(env);
 	env = pop(&is);
 	return strip_return(rr);
 }
 
-obj eval_function(ref lt, rel rt) {//lt ‚ğƒXƒ^ƒbƒNÏ‚İ‚É
+obj eval_function(ref lt, rel rt) {//lt Ã‡ï£¿Ã‰XÃ‰^Ã‰bÃ‰NÃªÅ“Ã‡â€ºÃ‡â€¦
 	if(type(lt)== tInternalFn) goto ci;
 	if(type(lt)!=tClosure) {print((obj)lt);  assert(0);}
 	{
@@ -400,7 +400,7 @@ ci:	try {
 		return nil;
 	}
 }
-obj eval_curry(obj exp, obj vars) {	// env‚Í‚¢‚ÜÀs’†‚Ì
+obj eval_curry(obj exp, obj vars) {	// envÃ‡Ã•Ã‡Â¢Ã‡â€¹Ã©Â¿Ã§sÃ­ÃœÃ‡Ãƒ
 /*	push(env);
 	env = op(vars, nil);
 	obj rr = exec(em1(exp));
@@ -444,7 +444,7 @@ obj macro_exec0(obj lt, obj rt) {
 	obj el =  subs(second(ll), &vars);
 	print(el);  scroll();
 	env = pop(&is);
-	release(vars);	// ‚¿‚å‚Á‚Æ•sˆÀ
+	release(vars);	// Ã‡Ã¸Ã‡Ã‚Ã‡Â¡Ã‡âˆ†Ã¯sÃ Â¿
 	obj rr = exec(el);
 	release(el);
 	return rr;
@@ -583,7 +583,7 @@ obj applyCC( obj (*func)(obj, obj), obj v1, obj v2){
 //		obj rr = new dblarr(len);
 		double* v = udar(rr).v;
 		for(int i=0; i<len; i++){
-			lt = Double(udar(v1).v[i]);//’x‚¢
+			lt = Double(udar(v1).v[i]);//Ã­xÃ‡Â¢
 			rt = Double(udar(v2).v[i]);
 			obj rx = call_fnr(func, lt,rt);
 		//	release(lt);
@@ -981,7 +981,7 @@ ev:	assert(!! exp);
 	case tDefine:
 		return func_def(em0(exp), em1(exp), em2(exp));
 	case tSyntaxDef:
-		let(lfind_var(em0(exp)),  render(tSyntaxLam, list3(em1(exp), em2(exp), nil)));
+		let(lfind_var(em0(exp)),  render(tSyntaxLam, list3(retain(em1(exp)), retain(em2(exp)), nil)));
 		return nil;
 	case tExec:
 		return exec(exp);
@@ -1214,7 +1214,7 @@ void enclose0(obj v){
 
 inline obj curry(obj var, obj val, obj code){
 	obj vars = Assoc();
-	bind_vars(&vars, var, val);		// retain‚Í“KØH
+	bind_vars(&vars, var, val);		// retainÃ‡Ã•Ã¬KÃªÃ¿Ã…H
 	return render(tCurry, list3(vars, code,  nil));
 	return render(tCurry, list3(var, code,  val));
 }
