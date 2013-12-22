@@ -892,6 +892,7 @@ inline obj eval_symbol(obj exp){	//assuming a symbol
 
 obj eval(obj exp){
 ev:	assert(!! exp);
+    obj rr,lt, rt;
 	switch (exp->type) {
 	case tInd:
 		return doInd(eval(ult(exp)), ul(eval(urt(exp))));
@@ -932,7 +933,6 @@ ev:	assert(!! exp);
 	case CONDITION:
 		return evalCond(exp);
 	case tOp:
-		obj rr,lt, rt;
 		if(type(ult(exp)) ==tSymbol) {
 			lt = search_assoc(curr_interp->types, ult(exp));
 			if(lt) return encap((ValueType)vrInt(lt), eval(urt(exp)));}

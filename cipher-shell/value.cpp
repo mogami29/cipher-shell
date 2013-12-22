@@ -24,7 +24,7 @@ void fill_pool(){
 		exit2shell();
 	}
 	for(int i=0; i<1000; i++) {
-		obj p = (obj)(tt + i*MINALLOC);
+		obj p = (value*)(tt + i*MINALLOC);
 		p->refcount = 1;
 		cdr(p) = pool;
 		pool = p;
@@ -47,8 +47,8 @@ void* value::operator new(size_t size){
 
 void value::operator delete(void* v, size_t size){
 	assert(size == MINALLOC);
-	cdr((obj)v) = pool;
-	pool = (obj)v;
+	cdr((value*)v) = pool;
+	pool = (value*)v;
 }
 
 void* my_malloc(size_t n){
@@ -67,8 +67,8 @@ void* my_malloc(size_t n){
 void my_free(void* p, size_t n){
 	if(n <= MINALLOC) {
 //		((obj)p)->refcount = 1;
-		cdr((obj)p) = pool;
-		pool = (obj)p;
+		cdr((value*)p) = pool;
+		pool = (value*)p;
 		return;
 	}
 	free(p);

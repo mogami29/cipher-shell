@@ -6,11 +6,24 @@
 #define smaller(a, b) ((a) < (b) ? (a) : (b))
 #define larger(a, b) ((a) > (b) ? (a) : (b))
  
-//typedef struct value*	obj;
-typedef class value*	obj;
-//typedef const struct value* ref;
-typedef const class value* ref;
+//typedef class value*	obj;
+//typedef const class value* ref;
 typedef struct value*	rel;
+
+class obj {
+	value * a;
+public:
+	inline value* operator->(){return a;}
+	inline value& operator*(){return *a;}
+	inline obj(){};
+//	inline obj(void* p):	a((value*)p){}
+	explicit obj(long p):	a((value*)p){}
+	inline obj(value*p):	a(p){}
+	inline operator long()	{return (long)a;}
+    template <class T> operator T*(){ return (T*)a;}
+};
+
+typedef class obj ref;
 
 /*typedef struct node* list;
 /*/template <class T> class node;
@@ -66,15 +79,3 @@ bool get_pat(unsigned char**pp, const char* s);	//get pattern in tokenizer.c
 obj retain(obj);	
 void release(obj);
 
-/* class obj {
-	value * a;
-public:
-	inline value* operator->(){return a;}; 
-	inline value& operator*(){return *a;}
-	inline obj(){};
-	inline obj(void* p):	a((value*)p){};
-	inline obj(int p):		a((value*)p){} //nil‚©‚ç‚ÌƒLƒƒƒXƒg
-	inline obj(value*p):	a(p){}
-	inline operator int()	{return (int)a;}
-//	inline operator void*()	{return (void*)a;}
-};*/
