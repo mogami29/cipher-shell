@@ -308,7 +308,7 @@ void release(obj v){
 }/**/
 
 obj retain(obj v){
-	if(v==nil) return v;
+	if(!v) return v;
 //	if((int)v & dVal) return v;
 	(v->refcount)++;
 	return v;
@@ -339,7 +339,7 @@ DblArray copyV(DblArray v1){
 	return v1;
 }
 obj copy(obj v){		//surface copy
-	if(v==nil) assert(0);
+	if(!v) assert(0);
 	obj r = alloc();
 	*r = *v;
 	r->refcount = 1;
@@ -392,6 +392,7 @@ obj copy(obj v){		//surface copy
 		r = val(copyString(ustr(v)));
 		r->type = tSymbol;
 		return r;
+    default:;
 	}
 	print(v);
 	assert(0);
@@ -457,7 +458,7 @@ void print(obj v){
 /*	Point pt;
 	GetPen(&pt);
 	if(pt.h>LEFTMARGIN+colWidth) return;
-*/	if(v==nil){
+*/	if(!v){
 		myPrintf("<nil>");
 		return;
 	}
@@ -861,6 +862,7 @@ bool equal(obj v1, obj v2){
 	case tWhile:
 	case tOp:
 		return equal(ult(v1), ult(v2)) && equal(urt(v1), urt(v2));
+    default:;
 	}
 	assert(0);
 	return false;

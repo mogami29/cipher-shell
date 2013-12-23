@@ -428,7 +428,7 @@ static void doLIndDA(double *v, int size, obj index, obj rt){
 		for(int i=0; ;i++){
 			if(size<=i) break;
 			obj rr=ind(rt, i);
-			if(rr==nil) break;
+			if(!rr) break;
 			assert(rr->type==tDouble);
 			*(v+i) = udbl(rr);
 		}
@@ -446,7 +446,7 @@ static void doLIndM(obj lt, list inds, obj rt){	// assume double_array_2
 			if(i>=uda2(lt).size1) break;
 			double * v = (uda2(lt).v)+i*(uda2(lt).size2);
 			obj rr=ind(rt, i);
-			if(rr==nil) break;
+			if(!rr) break;
 			doLIndDA(v, uda2(lt).size2, second(inds), rr);
 		}
 	} else if(type(ix)==INT){

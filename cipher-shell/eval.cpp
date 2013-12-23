@@ -61,12 +61,12 @@ void interpret(Interpreter interp, char* line){
 		rr->refcount--;
 		cdr(rr) = pool;
 		pool = rr;
-	}/**/
+	}//*/
 /*	for(int i=0; i<1000000*100; i++){
 		obj rr=alloc();
 		rr->type = INT;
 		release(rr);	
-	}/**/
+	}//*/
 
 /*
 obj u=Int(1);
@@ -78,7 +78,7 @@ while(vrInt(LT(x, e))){
 	release(x);
 	x=r;
 }
-/**/
+//*/
 	curr_interp = interp;
 	env = nil;
 	obj stat = parseString(&line);
@@ -172,7 +172,7 @@ static obj* lfind_var(obj id){
 		obj e = lfind_local(env, id, &v);
 		if(e) {release(env); env = e; return v;}
 		if(v) return v;
-/**/		return add_assoc(&car(env), id, nil);			//local
+//*/		return add_assoc(&car(env), id, nil);			//local
 	} else {	// when in global space
 		obj* v = left_search(curr_interp->gl_vars, id);//global
 		if(v) return v;
@@ -210,6 +210,8 @@ static obj do_assign(obj lt, obj rt){
 		return retain(*let(&(uref(lt)), rt));
 	case tSymbol:
 		return retain(*let(lfind_var(lt),rt));
+    default:
+        break;
 	case tInd:{
 		obj *var;
 		var = lfind_var(ult(lt));
@@ -244,6 +246,8 @@ static obj do_assign(obj lt, obj rt){
 static bool bind_vars(obj* vars, obj lt, obj rt){
 	obj utype;
 	switch(lt->type){
+    default:
+        break;
 	case tSymbol:
 		if(vars) add_assoc(vars, lt, rt); 
 		return true;
@@ -278,6 +282,8 @@ static bool bind_vars(obj* vars, obj lt, obj rt){
 static bool pbind_vars(obj* vars, obj lt){
 	obj utype;
 	switch(lt->type){
+    default:
+        break;
 	case tSymbol:
 		if(vars) add_assoc(vars, lt, nil); 
 		return true;
@@ -777,7 +783,7 @@ obj compare(int op, obj lt, obj rt){
 	case '<': 	fn = cclt; 	break;
 	case GE: 	fn = ccge; 	break;
 	case LE: 	fn = ccle; 	break;
-	default: 	assert(0);
+	default: 	assert(0);  return nil;
 	}
 	obj rr = fn(lt, rt);
 	if(rr) return rr;
@@ -846,7 +852,7 @@ obj qquote(obj rt){
 
 obj typeDef(obj rt){
 	obj rr=search_assoc(curr_interp->types, rt);	// get typenum
-	if(rr!=nil) return nil;
+	if(rr) return nil;
 	newType(rt);
 	return nil;
 }
@@ -1105,6 +1111,8 @@ nex:		return operate(tAssign, vp, subs0(cdr(v), vars));
 	case STRING:
 	case tBreak:
 		return retain(v);
+    default:
+        break;
 	}
 	print(v);
 	assert(0);
@@ -1142,7 +1150,7 @@ void enclose0(obj v){
 			}
 			//if(obj rr = search_assoc(car(macro_env), v)){ v=rr;}
 		}
-/**/		if(is_in(penv, v)) return;
+//*/		if(is_in(penv, v)) return;
 		if(search_pair(vto_close, car(v))) return;
 		add_assoc(&vto_close, v, nil); 
 		return;
@@ -1206,6 +1214,8 @@ void enclose0(obj v){
 	case STRING:
 	case tBreak:
 		return;
+    default:
+        break;
 	}
 	print(v);
 	assert(0);

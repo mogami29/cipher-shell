@@ -1000,7 +1000,7 @@ static obj Arg(obj vi){
 	return nil;
 }
 
-static obj transpose(obj v){
+/*static obj transpose(obj v){
 	if(! isCon(type(v))) error("transpose: not an array ");
 	int size1= size(v);
 	int size2 = size(ind(v,0));
@@ -1012,7 +1012,7 @@ static obj transpose(obj v){
 		}
 	}
 	return nil;
-}
+}*/
 
 static obj readLine(obj v){
     error("classic: not implemented");

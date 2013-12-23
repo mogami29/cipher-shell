@@ -159,7 +159,7 @@ list statementSeq(){
 	while(readToken()){
 		while(get(CR)||get(','));
 		rt = statement();
-		if(rt==nil) break;
+		if(!rt) break;
 		stats=cons(rt, stats);
 	}
 	return reverse(stats);

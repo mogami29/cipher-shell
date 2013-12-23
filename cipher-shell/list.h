@@ -62,4 +62,4 @@ inline obj fpp(L &l){
 	nn->a = v;
 	nn->d = list;
 	return nn;
-}/**/
+}//*/

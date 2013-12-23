@@ -151,7 +151,7 @@ public:
 		type = tDblArray; 
 		dbl_arr.size = n;
 		dbl_arr.v = (double *)my_malloc(sizeof(double)*n);
-	}/**/
+	}//*/
 };
 class str_: public value {
 public:
@@ -207,7 +207,7 @@ inline ValueType type(ref v) {return v->type;};
 	pool = pool->u.ope.rand;
 	r->refcount=1;
 	return r;
-}/**/
+}//*/
 obj alloc();
 //obj Null();
 obj Assoc();
