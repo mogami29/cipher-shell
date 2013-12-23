@@ -845,7 +845,7 @@ a1:	if(l1==l2) return true;		//nil‚Ì‚Æ‚«‚àˆê’v
 }
 
 bool equal(obj v1, obj v2){
-	if(v1==v2) return true;
+	if((value*)v1==v2) return true;
 	if(type(v1) != type(v2)) return false;
 	switch(type(v1)){
 	case INT:

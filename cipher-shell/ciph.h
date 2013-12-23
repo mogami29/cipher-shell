@@ -16,11 +16,11 @@ public:
 	inline value* operator->(){return a;}
 	inline value& operator*(){return *a;}
 	inline obj(){};
-//	inline obj(void* p):	a((value*)p){}
 	explicit obj(long p):	a((value*)p){}
+	explicit operator long(){return (long)a;}
 	inline obj(value*p):	a(p){}
-	inline operator long()	{return (long)a;}
-    template <class T> operator T*(){ return (T*)a;}
+	inline operator value*(){return (value*)a;}
+	template <class T> explicit operator T*(){return (T*)a;}
 };
 
 typedef class obj ref;
