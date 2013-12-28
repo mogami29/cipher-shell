@@ -6,24 +6,26 @@
 #define smaller(a, b) ((a) < (b) ? (a) : (b))
 #define larger(a, b) ((a) > (b) ? (a) : (b))
  
-//typedef class value*	obj;
-//typedef const class value* ref;
+typedef class value*	obj;
+typedef const class value* ref;
 typedef struct value*	rel;
 
-class obj {
+class val {
 	value * a;
 public:
 	inline value* operator->(){return a;}
 	inline value& operator*(){return *a;}
-	inline obj(){};
-	explicit obj(long p):	a((value*)p){}
+	inline val(){};
+	explicit val(long p):	a((value*)p){}
 	explicit operator long(){return (long)a;}
-	inline obj(value*p):	a(p){}
+	inline val(value*p):	a(p){}
 	inline operator value*(){return (value*)a;}
 	template <class T> explicit operator T*(){return (T*)a;}
+	// copy constructor
+	val(const val& s):a(s.a){}
+	// destructor
+	~val(void){}
 };
-
-typedef class obj ref;
 
 /*typedef struct node* list;
 /*/template <class T> class node;
