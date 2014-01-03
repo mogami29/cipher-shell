@@ -195,7 +195,6 @@ public:
 	union {
 		Array		array;
 	} u;
-	int size();
 };
 #define uar(ex)	(((arr*)ex)->u.array)
 
