@@ -98,7 +98,7 @@ static obj conditionExp();
 static obj dotsExp();
 static obj aexp();
 static obj mExp();
-static obj barExp();	//type: left recursion, bi-list
+static obj colonExp();	//type: left recursion, bi-list
 static obj operatorExp();
 static obj powerExp();
 static obj dotExp();
@@ -296,7 +296,15 @@ obj lamExp(){	//type non-recursive, bi-list
 }
 
 obj ifExp(){
-	if (!get(IF)) return andExp();
+	if (!get(IF)){
+		obj lt = andExp();
+		if(!get('|')) return lt;
+		obj cond = andExp();
+		if(!cond) parse_error("|exp: condition expected");
+		if(!(get(CR)||get(','))) parse_error("|exp: , expected");
+		obj elsec = ifExp();
+		return render(tIf, list3(cond, List2v(list1(lt)), List2v(list1(elsec))));
+	}
 	obj thenc,elsec;
 	if(!get('(')) parse_error("if:");
 	obj cond=andExp();
@@ -376,12 +384,12 @@ obj aexp(){
 obj mExp(){
 	obj lt,rt;
 	
-	lt=barExp(); 
+	lt=colonExp();
 	while(1){
 		int op=readToken();
 		if(op!='*' && op!='/') break;
 		getToken();
-		rt = barExp();
+		rt = colonExp();
 		if(! rt) parse_error("rhs missing for a [*/].");
 		lt=render(MULT,list2(lt,rt));
 		if(op=='*') lt->type=MULT;
@@ -390,14 +398,12 @@ obj mExp(){
 	return lt;
 }
 
-obj barExp(){	// actuall not bar but colon
-	obj lt,rt;
-	
-	lt=operatorExp(); 
+obj colonExp(){
+	obj lt = operatorExp();
 	return lt;
 
 	if(!get(':')) return lt;
-	rt = operatorExp();
+	obj rt = operatorExp();
 	if(! rt) parse_error("rhs missing for a ':'.");
 	return operate(tType, lt, rt);
 }
