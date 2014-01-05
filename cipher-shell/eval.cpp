@@ -164,7 +164,7 @@ static obj* lfind_var(obj id){
 	if(id->type==tRef) return &(uref(id));
 	if(env){
 		for(obj e=env; e; e=cdr(e)){
-			if(e->refcount !=1) break;
+			//if(e->refcount !=1) break;	140105 wrong because can't change enclosed vars
 			obj* v = left_search(car(e), id);
 			if (v) return v;
 		}
@@ -172,7 +172,7 @@ static obj* lfind_var(obj id){
 		obj e = lfind_local(env, id, &v);
 		if(e) {release(env); env = e; return v;}
 		if(v) return v;
-//*/		return add_assoc(&car(env), id, nil);			//local
+//*/	return add_assoc(&car(env), id, nil);			//local
 	} else {	// when in global space
 		obj* v = left_search(curr_interp->gl_vars, id);//global
 		if(v) return v;
@@ -215,6 +215,7 @@ static obj do_assign(obj lt, obj rt){
 	case tInd:{
 		obj *var;
 		var = lfind_var(ult(lt));
+		if(!*var) error("the vector does not exist.");
 		if((*var)->refcount > 1){
 			obj nv = copy(*var);
 			release(*var);
