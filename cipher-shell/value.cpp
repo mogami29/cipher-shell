@@ -156,21 +156,21 @@ char* copyString(const char* str){
 	strcpy(ns, str);
 	return ns;
 }
-str_* val(char* str){
+str_* cval(char* str){
 	str_* v = (str_*) alloc();
 	v->type = STRING;
 	v->string = str;
 	return v;
 }
 obj aString(int n){
-	return val((char *)m_malloc(n));
+	return cval((char *)m_malloc(n));
 }
 obj cString(const char* st, const char* en){
 	char *p, *ns=(char*) m_malloc(en-st+1);
 	for(p=ns; st<en; p++,st++) *p=*st;
 	*p=NULL;
 
-	return val(ns);
+	return cval(ns);
 }
 obj Symbol(const char* s){
 	str_* v = (str_*)alloc();
@@ -387,9 +387,9 @@ obj copy(obj v){		//surface copy
 		uref(r) = copy(uref(v));
 		return r;
 	case STRING:
-		return val(copyString(ustr(v)));
+		return cval(copyString(ustr(v)));
 	case tSymbol:
-		r = val(copyString(ustr(v)));
+		r = cval(copyString(ustr(v)));
 		r->type = tSymbol;
 		return r;
     default:;

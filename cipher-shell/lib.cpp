@@ -261,7 +261,7 @@ static obj read_as_string(obj vi){
 	long bytes;
 	char* prog = read(&bytes, vi);
 	for(char* st=prog; st < prog+bytes; st++) if(*st==NUL) error("a null char in the file.");
-	return val(prog);
+	return cval(prog);
 }
 
 obj read_lines(obj vi){
@@ -546,7 +546,7 @@ static obj subs(obj v){
 	if(pat->type!=STRING) error("subs: arguments must be strings.");
 	if(sub->type!=STRING) error("subs: arguments must be strings.");
 	char* st = subs(ustr(src), ustr(pat), ustr(sub));
-	return val(st);
+	return cval(st);
 }
 
 static int charhex(int c){
@@ -579,7 +579,7 @@ static obj binarize_percent(obj src){
 //	obj src = em0(v);
 	if(src->type!=STRING) error("binarize_percent: arguments must be a string.");
 	char* st = binarize_percent(ustr(src));
-	return val(st);
+	return cval(st);
 }
 
 //-- end string ---
