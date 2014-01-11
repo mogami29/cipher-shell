@@ -17,5 +17,6 @@
 
 #define NUL 0
 #define CR	13	// be careful that '\n' is not 13.
+#define LF	10
 #define	LP	'('
 #define	RP	')'

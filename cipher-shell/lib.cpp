@@ -188,7 +188,7 @@ char* merge(const char* s1, const char* s2){
 
 #define defaultDIR "/Users/mogami/Documents/"
 #define NUL 0
-#define CR '\n'
+#include "y.tab.h"
 
 obj open(obj vi){
 	obj fileName= req_one(vi);
@@ -272,14 +272,82 @@ obj read_lines(obj vi){
 	char* st = prog;
 	while(st < prog+bytes){
 		char* end = st;
-		for(; *end!=CR; end++){
-			if(*end==NUL) error("a null char in the file.");
+		for(; !(*end==CR || *end==LF); end++){
+			//if(*end==NUL) error("a null char in the file.");
 		}
 		rl = cons(cString(st, end), rl);
+		if(*end==CR && end[1]==LF) end++;
 		st = end+1;
 	}
 	free(prog);
 	return List2v(reverse(rl));
+}
+
+// from tokenizer (do something with duplicate is2n) and (x & x-1)==0
+template <class T> class array {
+public:
+	int size;
+	T* a;
+	array();
+	void append(T c);
+};
+#define MINALLOC0 8
+template <class T> array<T>::array(){
+	a = (T*)malloc(sizeof(T)*MINALLOC0);
+	size = 0;
+}
+
+inline bool is2n(int x){
+	bool f = x & (x-1);
+	for(int a=1; a; a<<=1) if(a==x) {assert(f); return true;}
+	assert(!f);
+	return false;
+}
+
+template <class T> void array<T>::append(T c){
+	int len = size;
+	if(len+1 >= MINALLOC0 && is2n(len+1)){
+        a = (T*)realloc ((void*)a, (len+1)*2*sizeof(T));
+	}
+	*(a+len) = c;
+	size = len+1;
+	return;
+}
+
+/*template <class T> array<T>::~array(){
+ free(a);
+}*/
+
+obj split0(obj v, char c){	// UTF8
+	array<obj> row = array<obj>();
+	assert(type(v)==STRING);
+	char* st = ustr(v);
+	for(;;){				// numbers
+		char* end = st;
+		for(; *end && *end!=','; end++){}
+		char* e;
+		double d = strtod(st, &e);
+		if(e ==end){
+			row.append(Double(d));
+		}else{
+			row.append(cString(st, end));
+		}
+		if(! *end) break;
+		st = end + 1;
+	}
+	return cArray(row.a, row.size);
+}
+
+obj read_csv(obj vi){	// UTF8
+	val lines = (val)read_lines(vi);
+	assert(type(lines)==LIST);
+	int nl = length(ul(lines));
+	arr* rv = aArray(nl);
+	list l=ul(lines);
+	for(int i=0; i<nl; i++, l=rest(l)){		// lines
+		uar(rv).v[i] = split0(first(l), ',');
+	}
+	return rv;
 }
 
 static obj Load(obj vi){
@@ -1028,9 +1096,10 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"readUShort",readUShort},
 	{"readDouble",readDouble},
 	{"readChar",readChar},
-	{"write",	Write},
+	{"write",	Write	},
 	{"reads",	read_as_string},
 	{"readl",	read_lines},
+	{"csv",		read_csv},
 	{"open",	open	},
 	{"close",	close	},
 	{"plot",	plot	},
