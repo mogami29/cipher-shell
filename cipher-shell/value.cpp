@@ -181,15 +181,15 @@ obj Symbol(const char* s){
 arr* aArray(int n){
 	arr* r = (arr*) alloc();
 	r->type = tArray;
-	r->u.array.size = n;
-	r->u.array.v = (obj*)my_malloc(n*sizeof(obj));
+	uar(r).size = n;
+	uar(r).v = (obj*)my_malloc(n*sizeof(obj));
 	return r;
 }
 arr* cArray(obj v[], int n){
 	arr* r = (arr*) alloc();
 	r->type = tArray;
-	r->u.array.size = n;
-	r->u.array.v = v;
+	uar(r).size = n;
+	uar(r).v = v;
 	return r;
 }
 list_* render(ValueType type, list l){

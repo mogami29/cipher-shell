@@ -345,7 +345,7 @@ obj read_csv(obj vi){	// UTF8
 	arr* rv = aArray(nl);
 	list l=ul(lines);
 	for(int i=0; i<nl; i++, l=rest(l)){		// lines
-		uar(rv).v[i] = split0(first(l), ',');
+		(*rv)[i] = split0(first(l), ',');
 	}
 	return rv;
 }

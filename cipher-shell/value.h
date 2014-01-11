@@ -192,11 +192,10 @@ public:
 
 class arr: public value {
 public:
-	union {
-		Array		array;
-	} u;
+	Array		array;
+	inline obj& operator[](int i){return array.v[i];}
 };
-#define uar(ex)	(((arr*)ex)->u.array)
+#define uar(ex)	(((arr*)ex)->array)
 
 inline ValueType type(ref v) {return v->type;};
 //void fill_pool();
