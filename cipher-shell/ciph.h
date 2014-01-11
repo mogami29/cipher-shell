@@ -15,16 +15,21 @@ class val {
 public:
 	inline value* operator->(){return a;}
 	inline value& operator*(){return *a;}
-	inline val(){};
+	val();
 	explicit val(long p):	a((value*)p){}
 	explicit operator long(){return (long)a;}
-	inline val(value*p):	a(p){}
+	explicit inline val(value*p):	a(p){}
 	inline operator value*(){return (value*)a;}
 	template <class T> explicit operator T*(){return (T*)a;}
 	// copy constructor
 	val(const val& s):a(s.a){}
 	// destructor
-	~val(void){}
+	~val(void);
+	// move constructor
+	val(val && r){
+		a = r.a;
+		r.a = nullptr;
+		}
 };
 
 /*typedef struct node* list;
@@ -78,6 +83,7 @@ int readchar(char* st);		// in tokenizer.c
 bool get_pat(unsigned char**pp, const char* s);	//get pattern in tokenizer.c
 
 // in value.c
-obj retain(obj);	
+obj retain(obj);
 void release(obj);
+inline val::~val(){release(a);}
 
