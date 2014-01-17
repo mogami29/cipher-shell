@@ -318,7 +318,7 @@ template <class T> void array<T>::append(T c){
  free(a);
 }*/
 
-obj split0(obj v, char c){	// UTF8
+obj split0(obj v){	// UTF8
 	array<obj> row = array<obj>();
 	assert(type(v)==STRING);
 	char* st = ustr(v);
@@ -338,16 +338,20 @@ obj split0(obj v, char c){	// UTF8
 	return cArray(row.a, row.size);
 }
 
+static obj map2arr(obj func(obj), list l){
+	int nl = length(l);
+	arr* rv = aArray(nl);
+	for(int i=0; i<nl; i++, l=rest(l)){
+		(*rv)[i] = func(first(l));
+	}
+	return rv;
+}		// consider merging map_obj to this
+
 obj read_csv(obj vi){	// UTF8
 	val lines = (val)read_lines(vi);
 	assert(type(lines)==LIST);
-	int nl = length(ul(lines));
-	arr* rv = aArray(nl);
-	list l=ul(lines);
-	for(int i=0; i<nl; i++, l=rest(l)){		// lines
-		(*rv)[i] = split0(first(l), ',');
-	}
-	return rv;
+	return map2arr(split0, ul(lines));
+	//	[](obj x) -> obj { return split0(x, ','); };
 }
 
 static obj Load(obj vi){
