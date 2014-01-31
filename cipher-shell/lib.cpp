@@ -283,40 +283,11 @@ obj read_lines(obj vi){
 	return List2v(reverse(rl));
 }
 
-// from tokenizer (do something with duplicate is2n) and (x & x-1)==0
-template <class T> class array {
-public:
-	int size;
-	T* a;
-	array();
-	void append(T c);
-};
-#define MINALLOC0 8
-template <class T> array<T>::array(){
-	a = (T*)malloc(sizeof(T)*MINALLOC0);
-	size = 0;
+arr* mvArray(array<obj>& a){
+	obj* p = a.a;
+	a.a = nil;
+	return cArray(p, a.size);
 }
-
-inline bool is2n(int x){
-	bool f = x & (x-1);
-	for(int a=1; a; a<<=1) if(a==x) {assert(f); return true;}
-	assert(!f);
-	return false;
-}
-
-template <class T> void array<T>::append(T c){
-	int len = size;
-	if(len+1 >= MINALLOC0 && is2n(len+1)){
-        a = (T*)realloc ((void*)a, (len+1)*2*sizeof(T));
-	}
-	*(a+len) = c;
-	size = len+1;
-	return;
-}
-
-/*template <class T> array<T>::~array(){
- free(a);
-}*/
 
 obj split0(obj v){	// UTF8
 	array<obj> row = array<obj>();
@@ -335,7 +306,7 @@ obj split0(obj v){	// UTF8
 		if(! *end) break;
 		st = end + 1;
 	}
-	return cArray(row.a, row.size);
+	return mvArray(row);
 }
 
 static obj map2arr(obj func(obj), list l){
@@ -1125,7 +1096,7 @@ struct funcbind infnbind[] = {	//internal function bind
 
 	{"max",	max	},
 	{"min",	min	},
-	{"floor",	Floor	},
+	{"floor",Floor	},
 	{"abs",	Abs	},
 	{"sin",	Sin	},
 	{"cos",	Cos	},
@@ -1164,12 +1135,12 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"isempty",	isEmpty},
 	{"empty",	isEmpty},
 	{"length",	Length1},
-	{"len",	Length1},
+	{"len",		Length1},
 	{"inassoc",	inassoc},
 	{"assoc",	assoc	},
 	{"search",	search},
 	{"sum",	Sum	},
-	{"prod",	Prod	},
+	{"prod",Prod},
 	{"map",	Map	},
 
 	{"op"	,	Op	},

@@ -18,12 +18,6 @@ string nullstr(){
 	return st;
 }
 
-inline int is2n(int x){
-	for(int a=1; a; a<<=1) if(a==x) return true;
-	return false;
-//	while(x & (x-1)) x = x & (x-1);
-//	return x;
-}
 static
 void appendB(string* s, int c){
 	char* p = s->s;

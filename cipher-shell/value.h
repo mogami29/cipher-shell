@@ -32,6 +32,39 @@ typedef struct {
 	obj rand;
 } opExp;
 
+// from tokenizer
+template <class T> class array {
+public:
+	int size;
+	T* a;
+	array();
+	~array();
+	void append(T c);
+};
+#define MINALLOC0 8
+template <class T> array<T>::array(){
+	a = (T*)malloc(sizeof(T)*MINALLOC0);
+	size = 0;
+}
+
+inline bool is2n(int x){
+	return !(x & (x-1));
+}
+
+template <class T> void array<T>::append(T c){
+	int len = size;
+	if(len+1 >= MINALLOC0 && is2n(len+1)){
+        a = (T*)realloc ((void*)a, (len+1)*2*sizeof(T));
+	}
+	*(a+len) = c;
+	size = len+1;
+	return;
+}
+
+template <class T> array<T>::~array(){
+	if(a) free(a);
+}
+
 typedef enum {
 	INT = 1,
 	tDouble,
@@ -196,6 +229,11 @@ public:
 	inline obj& operator[](int i){return array.v[i];}
 };
 #define uar(ex)	(((arr*)ex)->array)
+
+class canvas_: public value {
+public:
+	canvas*		cv;
+};
 
 inline ValueType type(ref v) {return v->type;};
 //void fill_pool();
