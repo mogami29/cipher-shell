@@ -62,7 +62,7 @@ typedef enum {
 	tDefine,	//list-3
 	tSyntaxDef,	//list-3
 	tIf,		//list-3
-	tWhile,	//op
+	tWhile,		//op
 	tReturn,	//ref
 	tBreak,
 	tSeq,		//not used
@@ -75,21 +75,21 @@ typedef enum {
 	tExec,	//list
 	tType,	// op
 	tArrow,	// list
-	tClosure,	// list-2,3
+	tClosure,// list-2,3
 	tCurry,	// list
 	tScope,	// op
 // naibu
-	tInternalFn,	//func
+	tInternalFn,//func
 	tSpecial,	//func
-	TOKEN,	//int
+	TOKEN,		//int
 	tRef,		//ref, 
-	tCont,	//ref
+	tCont,		//ref
 	tSigRet,	//ref
 // naibude (shell) tsukau
 	FRACTION,	//list-2
 	SuperScript,//list
 	SubScript,	// list
-	tShow,	// list
+	tShow,		// list
 	tHide,		// list
 	tIns,		// list
 	tDel,		// intv
