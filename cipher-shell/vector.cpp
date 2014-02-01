@@ -79,7 +79,7 @@ int find(list l, obj v){
 
 obj toDblArr(obj v){
 	int len;
-	obj rr;
+	dblarr* rr;
 	if(isVec(type(v))){
 		len = size(v);
 		rr = dblArray(len);
@@ -183,9 +183,9 @@ void do_obj(void (*func)(obj), obj v){	// not tested yet
 	}
 }
 
-obj map_arr( obj (*func)(obj), obj v){	// map and the result is an array
+arr* map2arr( obj (*func)(obj), obj v){	// map and the result is an array
 	int n;
-	obj rr;
+	arr* rr;
 	switch(type(v)){
 	case LIST: {
 		n = size(v);

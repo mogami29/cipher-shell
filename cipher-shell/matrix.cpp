@@ -168,7 +168,7 @@ inline obj em(obj ar, int i){
 
 obj inv(obj v){
 	//int spflag=0;	// =1, if the matrix contains sparse vector.
-	obj m = map_arr(toDblArr, v);
+	obj m = map2arr(toDblArr, v);
 	int n = size(v);
 	for(int i=0; i<n; i++) {
 		if(size(em(m, i)) != n) error("non-square matrix");

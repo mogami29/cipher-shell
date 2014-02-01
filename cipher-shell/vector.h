@@ -7,8 +7,9 @@ inline int isvec(obj v){return isVec(v->type);};
 inline int iscon(obj v){return isCon(v->type);};
 obj toDblArr(obj v);
 obj map_obj( obj (*func)(obj), obj v);
-obj map_arr( obj (*func)(obj), obj v);
+arr* map2arr( obj (*func)(obj), obj v);
 void do_obj(void (*func)(obj), obj v);	// not tested yet
+obj list2arr(obj v);
 ValueType vec_type(obj v);
 
 obj search_pair(list l, obj key);

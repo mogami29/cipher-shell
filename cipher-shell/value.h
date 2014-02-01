@@ -257,7 +257,7 @@ obj aString(int n);	//alloc string
 obj Symbol(const char* s);
 obj Int(int i);
 obj Double(double d);
-obj dblArray(int n);
+dblarr* dblArray(int n);
 obj intArray(int n);
 arr* aArray(int n);
 arr* cArray(obj v[], int n);

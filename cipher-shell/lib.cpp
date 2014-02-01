@@ -316,7 +316,7 @@ static obj map2arr(obj func(obj), list l){
 		(*rv)[i] = func(first(l));
 	}
 	return rv;
-}		// consider merging map_obj to this
+}		// consider merging this and map2arr(func, obj)
 
 obj read_csv(obj vi){	// UTF8
 	val lines = (val)read_lines(vi);
