@@ -487,6 +487,34 @@ static obj dots(obj v){
 	return nil;
 }
 
+#ifdef GUI
+static obj lineTo(obj vi){
+	static int px=0,py=0;
+	int x,y;
+	
+    if(length(ul(vi))!=2) error("too many or too few num. of args.");
+	x=uint(em0(vi));
+	y=uint(em1(vi));
+	//Classic MoveTo(px,windowHeight-py);
+	//Classic LineTo(x, windowHeight-y);
+	px=x;
+	py=y;
+	return nil;
+}
+
+static float line_width = 1.0;
+
+void addGrObj(gr* gr_obj);		// in appSpeci.c
+
+static obj draw_line(obj vi){	// array of (x,y)
+	arr* v = map2arr(toDblArr, vi);
+	for(int i=0; i < size(v); i++) if(size((*v)[i]) != 2) error("each point must be a 2-element vector");
+	gr_line* l = new gr_line(v, line_width);
+	addGrObj(l);
+	return nil;
+}
+#endif
+
 static obj Floor(obj vi){
 	obj arg=req_one(vi);
 	assert(type(arg)==tDouble);
@@ -736,20 +764,6 @@ static obj CImg(obj vi){
 	uar(v).v[2] = map_obj(toDblArr, em2(vi));
 	v->type = tCImg;
 	return v;
-}
-
-static obj lineTo(obj vi){
-	static int px=0,py=0;
-	int x,y;
-	
-    if(length(ul(vi))!=2) error("too many or too few num. of args.");
-	x=uint(em0(vi));
-	y=uint(em1(vi));
-	//Classic MoveTo(px,windowHeight-py);
-	//Classic LineTo(x, windowHeight-y);
-	px=x;
-	py=y;
-	return nil;
 }
 
 //------------intrinsic functions ---
@@ -1080,7 +1094,6 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"plot",	plot	},
 	{"dots",	dots	},
 	{"load",	Load	},
-	{"lineto",	lineTo	},
 	{"fseek",	fseek	},
 	{"print",	print2},
 	{"readline",readLine},
@@ -1090,10 +1103,14 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"sparse",	Sparse},
 	{"hash",	Hash	},
 	{"inv",	inv	},	// in value.c
+#ifdef GUI
 	{"image",	image},
 	{"cimg",	CImg	},
 	{"imgc",	CImg	},
-
+	{"lineto",	lineTo	},
+	{"line",	draw_line},
+#endif
+	
 	{"max",	max	},
 	{"min",	min	},
 	{"floor",Floor	},
@@ -1122,7 +1139,7 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"binarizePercent",	binarize_percent},
 	{"string",	toStr	},
 	{"rand",	Rand	},
-	{"ser",	Ser	},
+	{"ser"	,	Ser		},
 	{"#"	,	ISer	},
 	{".."	,	Range	},
 	{"..."	,	Range3},

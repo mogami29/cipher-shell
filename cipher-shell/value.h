@@ -127,7 +127,9 @@ typedef enum {
 	tIns,		// list
 	tDel,		// intv
 	tMove,	// list
+// graphics
 	tPlot,	// dbl_arr
+	tCanvas,	// list
 	tLast	// 52
 } ValueType;
 
@@ -230,10 +232,27 @@ public:
 };
 #define uar(ex)	(((arr*)ex)->array)
 
-class canvas_: public value {
+class gr {
 public:
-	canvas*		cv;
+	virtual void drawAt(float x, float y){}
 };
+
+class gr_line: public gr {
+public:
+	float	width;
+	arr*	pts;
+	gr_line(arr* pts, float width):pts(pts),width(width){}
+	~gr_line(){release(pts);}
+	void drawAt(float x, float y);
+};
+
+class canvas: public value {
+public:
+	array<gr*> grs;
+	canvas(){type=tCanvas;}
+};
+static_assert(sizeof(canvas)<=sizeof(opr), "");
+
 
 inline ValueType type(ref v) {return v->type;};
 //void fill_pool();
