@@ -505,12 +505,22 @@ static obj lineTo(obj vi){
 static float line_width = 1.0;
 
 void addGrObj(gr* gr_obj);		// in appSpeci.c
+char* canvas2eps(size_t* n);
 
 static obj draw_line(obj vi){	// array of (x,y)
 	arr* v = map2arr(toDblArr, vi);
 	for(int i=0; i < size(v); i++) if(size((*v)[i]) != 2) error("each point must be a 2-element vector");
 	gr_line* l = new gr_line(v, line_width);
 	addGrObj(l);
+	return nil;
+}
+
+static obj eps(obj fn){
+	if(fn->type!=STRING) error("filename must be a string");
+	size_t len;
+	char* eps = canvas2eps(&len);
+	write(eps, len, fn);
+	free(eps);
 	return nil;
 }
 #endif
@@ -1109,6 +1119,7 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"imgc",	CImg	},
 	{"lineto",	lineTo	},
 	{"line",	draw_line},
+	{"eps",		eps	},
 #endif
 	
 	{"max",	max	},
@@ -1120,7 +1131,7 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"tan",	Tan	},
 	{"exp",	exp	},
 	{"log",	Log	},
-	{"sqr",	Sqrt	},
+	{"sqrt",Sqrt	},
 	{"int",	toInt	},
 	{"clipnan",	clipnan},
 	{"isnan",	isnan1},
