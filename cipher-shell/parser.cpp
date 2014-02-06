@@ -134,7 +134,7 @@ obj parseString(char** str){
 		rr = nil;
 	}
 	*str=ptr;
-	if(*ptr!=NUL && *ptr!=CR) myPrintf("unrecognized token '%d' .",next_token);
+	if(*ptr!=NUL && next_token!='\n') myPrintf("unrecognized token '%d'.", next_token);
 	return rr;
 }
 /* 
@@ -157,7 +157,7 @@ list statementSeq(){
 	obj rt;
 	list stats=phi();
 	while(readToken()){
-		while(get(CR)||get(','));
+		while(get('\n')||get(','));
 		rt = statement();
 		if(!rt) break;
 		stats=cons(rt, stats);
@@ -301,7 +301,7 @@ obj ifExp(){
 		if(!get('|')) return lt;
 		obj cond = andExp();
 		if(!cond) parse_error("|exp: condition expected");
-		if(!(get(CR)||get(','))) parse_error("|exp: , expected");
+		if(!(get('\n')||get(','))) parse_error("|exp: , expected");
 		obj elsec = ifExp();
 		return render(tIf, list3(cond, List2v(list1(lt)), List2v(list1(elsec))));
 	}
@@ -310,7 +310,7 @@ obj ifExp(){
 	obj cond=andExp();
 	if(!get(')')) parse_error("if:");
 	thenc= statement();
-	get(CR) ;
+	get('\n') ;
 	if(get(ELSE)){
 		elsec = statementPseudoList();
 	}else{

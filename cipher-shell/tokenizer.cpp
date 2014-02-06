@@ -184,7 +184,7 @@ obj yylex(){
 	while(c=read(), c==' '||c=='\t') step();
 	if(get_pat(&ptr, "->")) return Token(kArrow);
 	if(get_pat(&ptr, "--")) {
-		while(c=read(),c!=NUL && c!=CR) step();
+		while(c=read(),c!=NUL && c!='\n') step();
 		return Token(c);
 	}
 	if(c==NUL) return Token(c);	//行の終わりではnullが返される。
@@ -207,7 +207,7 @@ obj yylex(){
 		return cre_id(s.s);
 	}
 
-	if(get(CR)) return Token(CR);
+	if(get('\n')) return Token('\n');
 	if(get('"')){			//文字列リテラル
 		s=nullstr();
 		while((c = read())) {

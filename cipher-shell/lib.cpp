@@ -328,7 +328,8 @@ obj read_csv(obj vi){	// UTF8
 static obj Load(obj vi){
 	long bytes;
 	char *prog = read(&bytes, vi);
-	// execute	
+	for(char* p=prog; *p; p++) if(*p==CR || *p==LF) *p = '\n';
+	// execute
 	char* execPtr = prog;
 	while(1){
 		obj rr = parseString(&execPtr);
@@ -338,7 +339,7 @@ static obj Load(obj vi){
 			scroll();
 			release(rr);
 		}
-		if(*execPtr==CR) execPtr++;
+		if(*execPtr==CR || *execPtr==LF) execPtr++;
 		if (execPtr >= prog+bytes) break;
 	}
 	free(prog);
