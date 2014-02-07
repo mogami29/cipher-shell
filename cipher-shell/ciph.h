@@ -10,26 +10,36 @@ typedef class value*	obj;
 typedef const class value* ref;
 typedef struct value*	rel;
 
+/*class obj {
+	value * a;
+public:
+	inline value* operator->(){return a;}
+	inline value& operator*(){return *a;}
+	inline obj(){};
+	explicit obj(long p):	a((value*)p){}
+	explicit operator long(){return (long)a;}
+	inline obj(value*p):	a(p){}
+	inline operator value*(){return (value*)a;}
+	template <class T> explicit operator T*(){return (T*)a;}
+};*/
+
 class val {
 	value * a;
 public:
 	inline value* operator->(){return a;}
 	inline value& operator*(){return *a;}
 	val();
+//	val(double p):	a(nullptr){}
 	explicit val(long p):	a((value*)p){}
 	explicit operator long(){return (long)a;}
 	explicit inline val(value*p):	a(p){}
-	inline operator value*(){return (value*)a;}
+//	inline operator value*(){return a;}
+	inline operator obj()&&{value*p=a; a=nullptr; return p;}
+	inline operator obj()& {return a;}
 	template <class T> explicit operator T*(){return (T*)a;}
-	// copy constructor
-	val(const val& s):a(s.a){}
-	// destructor
+	val(const val& s):a(s.a){}	// copy constructor
 	~val(void);
-	// move constructor
-	val(val && r){
-		a = r.a;
-		r.a = nullptr;
-		}
+	val(val && r):a(r.a){ r.a = nullptr; }	// move constructor
 };
 
 /*typedef struct node* list;

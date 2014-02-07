@@ -28,7 +28,7 @@ static obj createDSeries(double d){
 	return v;
 }
 
-static obj Ser(obj v){
+static obj ser(obj v){
 	if(type(v) == tDouble) return createDSeries(udbl(v));
 	if(type(v) == INT) return createDSeries(uint(v));
 	error("ser: scalar nomi.");
@@ -50,7 +50,7 @@ static obj Rand(obj arg){
 	return nil;
 }
 
-static obj ISer(obj arg){
+static obj iser(obj arg){
 	if(type(arg)!=INT) error("i-series, not a int");
 	int step = uint(arg);
 	obj rr = aArray(step);
@@ -289,7 +289,7 @@ arr* mvArray(array<obj>& a){
 	return cArray(p, a.size);
 }
 
-obj split0(obj v){	// UTF8
+val split0(obj v){	// UTF8
 	array<obj> row = array<obj>();
 	assert(type(v)==STRING);
 	char* st = ustr(v);
@@ -306,10 +306,10 @@ obj split0(obj v){	// UTF8
 		if(! *end) break;
 		st = end + 1;
 	}
-	return mvArray(row);
+	return (val)mvArray(row);
 }
 
-static obj map2arr(obj func(obj), list l){
+static obj map2arr(val func(obj), list l){
 	int nl = length(l);
 	arr* rv = aArray(nl);
 	for(int i=0; i<nl; i++, l=rest(l)){
@@ -1092,7 +1092,41 @@ static obj readLine(obj v){
 	return editline(v);
 }*/
 
+static val iser(int step){	// duplicate of iser(obj)
+	arr* rr = aArray(step);
+	for(int i=0; i<step; i++) uar(rr).v[i]=Int(i);
+	return (val)rr;
+}
+inline val operator*(float a, val b){
+	return (val)mult(val(a), b);
+}
+inline val operator+(float a, val b){
+	return (val)add(val(a), b);
+}
+static int iterator_begin(){ return 0;}
+static bool is_assinable(val& x, val X, int i){
+//	if(i<size(X)){x = (val)ind(X, i); return true;}
+	return false;
+}
+#define FOR(x, X) for(int i=0; is_assinable(x, X, i); i++)	// I must not be a right value
+val::val():a(nil){}
+// --- end lib
+static val ser(float a, float b, int n){	// return val_arr in the future
+	return a + ((b-a)/n) * iser(n+1);
+}
+static obj hoge(obj v){		// static-cipher
+	val S = ser(-2.0, 2.0, 20);
+	val x, y;		// try making them double
+	FOR(x, S) FOR(y, S) {
+		obj vi =
+		draw_line(vi);
+	}
+	return nil;
+//	[](obj x) -> obj { return split0(x, ','); };
+}
+
 struct funcbind infnbind[] = {	//internal function bind
+	{"hoge",	hoge},
 	{"readUShort",readUShort},
 	{"readDouble",readDouble},
 	{"readChar",readChar},
@@ -1151,8 +1185,8 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"binarizePercent",	binarize_percent},
 	{"string",	toStr	},
 	{"rand",	Rand	},
-	{"ser"	,	Ser		},
-	{"#"	,	ISer	},
+	{"ser"	,	ser		},
+	{"#"	,	iser	},
 	{".."	,	Range	},
 	{"..."	,	Range3},
 	{"append",	Cons	},
