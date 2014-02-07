@@ -204,6 +204,9 @@ static obj func_def(obj name, obj params, obj expr) {
 	return retain(*let(func, render(tClosure, lam)));
 }
 
+static bool macromode = 0;
+static obj macro_env = nil;
+
 static obj do_assign(obj lt, obj rt){
 	switch(type(lt)) {
 	case tRef:
@@ -250,7 +253,15 @@ static bool bind_vars(obj* vars, obj lt, obj rt){
     default:
         break;
 	case tSymbol:
-		if(vars) add_assoc(vars, lt, rt); 
+		if(macromode){
+			if(obj rr = search_assoc(car(macro_env), lt)){
+				//macromode = false;
+				if(vars) add_assoc(vars, rr, rt);
+				//macromode = true;
+				return true;
+			}
+		}
+		if(vars) add_assoc(vars, lt, rt);
 		return true;
 	case tRef:
 		let(&(uref(lt)), rt);
@@ -419,9 +430,6 @@ obj eval_curry(obj exp, obj vars) {	// envÇÕÇ¢Ç‹é¿çsíÜÇÃ
 	pop(&env);
 	return strip_return(rr);
 /**/}
-
-static bool macromode = 0;
-static obj macro_env = nil;
 
 obj macro_exec(obj lt, obj rt) {		// not yet
 	assert(type(lt)==tSyntaxLam);
