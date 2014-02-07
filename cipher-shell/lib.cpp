@@ -507,6 +507,7 @@ static float line_width = 1.0;
 
 void addGrObj(gr* gr_obj);		// in appSpeci.c
 char* canvas2eps(size_t* n);
+void new_canvas();
 
 static obj draw_line(obj vi){	// array of (x,y)
 	arr* v = map2arr(toDblArr, vi);
@@ -522,6 +523,11 @@ static obj eps(obj fn){
 	char* eps = canvas2eps(&len);
 	write(eps, len, fn);
 	free(eps);
+	return nil;
+}
+
+static obj new_canvas(obj v){
+	if(v) error("no argument expected.");
 	return nil;
 }
 #endif
@@ -1115,12 +1121,14 @@ static val ser(float a, float b, int n){	// return val_arr in the future
 	return a + ((b-a)/n) * iser(n+1);
 }
 static obj hoge(obj v){		// static-cipher
+#ifdef GUI
 	val S = ser(-2.0, 2.0, 20);
 	val x, y;		// try making them double
 	FOR(x, S) FOR(y, S) {
 		obj vi =
 		draw_line(vi);
 	}
+#endif
 	return nil;
 //	[](obj x) -> obj { return split0(x, ','); };
 }
@@ -1155,6 +1163,7 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"lineto",	lineTo	},
 	{"line",	draw_line},
 	{"eps",		eps	},
+	{"newfig",	new_canvas},
 #endif
 	
 	{"max",	max	},
