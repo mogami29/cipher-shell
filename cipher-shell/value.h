@@ -138,7 +138,7 @@ class value {
 public:
 	int	refcount;
 	ValueType	type;
-//	virtual ~value() {}
+	virtual ~value() {}
 	void*operator new(size_t size);
 	void operator delete(void* val, size_t size);
 };
@@ -180,8 +180,7 @@ class dblarr: public value {
 public:
 	DblArray	dbl_arr;
 
-	int size();
-	dblarr(int n) ;
+	dblarr(int n);
 /*	inline dblarr(int n) {
 		type = tDblArray; 
 		dbl_arr.size = n;
@@ -276,7 +275,7 @@ obj aString(int n);	//alloc string
 obj Symbol(const char* s);
 obj Int(int i);
 obj Double(double d);
-dblarr* dblArray(int n);
+inline dblarr* dblArray(int n){return new dblarr(n);}
 obj intArray(int n);
 arr* aArray(int n);
 arr* cArray(obj v[], int n);

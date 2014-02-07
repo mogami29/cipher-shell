@@ -83,18 +83,18 @@ double v2Double(obj v){		//cast to double
 	    return 0;
 	}
 }
-dblarr* dblArray(int n){
+/*dblarr* dblArray(int n){
 	dblarr* v = (dblarr*)alloc();
 	v->type = tDblArray;
 	udar(v).size = n;
 	udar(v).v = (double *)my_malloc(sizeof(double)*n);
 	return v;
-}
-/*dblarr::dblarr(int n) {
+}*/
+dblarr::dblarr(int n) {
 	type = tDblArray; 
 	dbl_arr.size = n;
 	dbl_arr.v = (double *)my_malloc(sizeof(double)*n);
-}*/
+}
 obj intArray(int n){
 	obj v = alloc();
 	v->type = tIntArr;
