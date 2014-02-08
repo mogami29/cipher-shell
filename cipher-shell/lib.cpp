@@ -1116,17 +1116,33 @@ static bool is_assinable(val& x, val X, int i){
 }
 #define FOR(x, X) for(int i=0; is_assinable(x, X, i); i++)	// I must not be a right value
 val::val():a(nil){}
+DblArray multAA(DblArray *v1, DblArray *v2);
+DblArray multDV(double d1, DblArray v2);
+inline DblArray operator*(DblArray v1, DblArray v2){return multAA(&v1, &v2);}
+inline DblArray operator*(double d1, DblArray v2){return multDV(d1, v2);}
+inline DblArray operator*(DblArray v1, double d2){return multDV(d2, v1);}
+static double sum(DblArray v){
+	double s = 0;
+	for(int i=0; i<v.size; i++) s += v.v[i];
+	return s;
+}
+static double norm(DblArray v){
+	return sqrt(sum(v*v));
+}
 // --- end lib
 static val ser(float a, float b, int n){	// return val_arr in the future
 	return a + ((b-a)/n) * iser(n+1);
 }
+/*static DblArray el(double x, double y){
+	return v * pow(larger(sqrt(x*x + y*y), 0.1), -3);
+}*/
 static obj hoge(obj v){		// static-cipher
 #ifdef GUI
 	val S = ser(-2.0, 2.0, 20);
 	val x, y;		// try making them double
 	FOR(x, S) FOR(y, S) {
-		obj vi =
-		draw_line(vi);
+//		DblArray vi = el(x, y) - el(x, y);
+//		draw_line(vi);
 	}
 #endif
 	return nil;

@@ -601,7 +601,7 @@ prop:		print(car(v));
 void set(DblArray* a, int i, double d){
 	a->v[i]=d;
 }
-inline DblArr2 addMM(DblArr2 *m1, DblArr2 *m2, int plusminus){
+DblArr2 addMM(DblArr2 *m1, DblArr2 *m2, int plusminus){
 	DblArr2 m;
 	if(m1->size2 != m2->size2  || m1->size1 != m2->size1) error("unequal number matrix:add");		
 	m.size1 = m1->size1;
@@ -612,7 +612,7 @@ inline DblArr2 addMM(DblArr2 *m1, DblArr2 *m2, int plusminus){
 	}
 	return m;
 }
-inline DblArray addVV(DblArray v1, DblArray v2, int plusminus){
+DblArray addVV(DblArray v1, DblArray v2, int plusminus){
 	DblArray rv;	
 	if(v1.size != v2.size) error ("add: unequal number of element in vec");	
 	rv.size = v1.size;
@@ -623,7 +623,7 @@ inline DblArray addVV(DblArray v1, DblArray v2, int plusminus){
 	rv.v = v;	
 	return rv;
 }
-inline DblArray addDA(double d1, DblArray v2, int plusminus){
+DblArray addDA(double d1, DblArray v2, int plusminus){
 	DblArray rv;
 	rv.size = v2.size;
 	double* v = (double*)malloc(sizeof(double)*rv.size);
@@ -633,7 +633,7 @@ inline DblArray addDA(double d1, DblArray v2, int plusminus){
 	rv.v = v;
 	return rv;
 }
-static DblArray multDV(double d1, DblArray v2){
+DblArray multDV(double d1, DblArray v2){
 	DblArray rv;
 	rv.size = v2.size;
 	double *v = (double*)malloc(sizeof(double)*rv.size);														
@@ -643,7 +643,7 @@ static DblArray multDV(double d1, DblArray v2){
 	rv.v = v;
 	return rv;
 }
-static DblArr2 multDM(double d, DblArr2 m){
+DblArr2 multDM(double d, DblArr2 m){
 	double *v = (double*)malloc(sizeof(double)*m.size1*m.size2);
 	for(int i=0; i < m.size1*m.size2; i++){
 		v[i] = d * m.v[i];
@@ -651,7 +651,7 @@ static DblArr2 multDM(double d, DblArr2 m){
 	m.v=v;
 	return m;
 }
-static DblArray multAA(DblArray *v1, DblArray *v2){
+DblArray multAA(DblArray *v1, DblArray *v2){
 	DblArray rv;
 	double *v = (double*)malloc(sizeof(double)*v1->size);												
 	for(int i=0; i < v1->size; i++){
