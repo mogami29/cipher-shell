@@ -53,6 +53,7 @@ static obj Rand(obj arg){
 static obj iser(obj arg){
 	if(type(arg)!=INT) error("i-series, not a int");
 	int step = uint(arg);
+	if(step < 0) error("#: not defined for negative.");
 	obj rr = aArray(step);
 	for(int i=0; i<step; i++) uar(rr).v[i]=Int(i);
 	return rr;
@@ -532,10 +533,13 @@ static obj new_canvas(obj v){
 }
 #endif
 
-static obj Floor(obj vi){
-	obj arg=req_one(vi);
+static obj floor(obj arg){
 	assert(type(arg)==tDouble);
 	return Int(floor(udbl(arg)));
+}
+static obj ceil(obj arg){
+	assert(type(arg)==tDouble);
+	return Int(ceil(udbl(arg)));
 }
 
 static obj Abs(obj vi){
@@ -548,16 +552,14 @@ static obj Cos(obj vi){
 	return applyV(cos, vi, nil);
 }
 static obj Tan(obj vi){
-	obj arg= req_one(vi);
-	return applyV(tan, arg, nil);
+	return applyV(tan, vi, nil);
 }
 static obj exp(obj vi){
 	static obj symexp = Symbol("exp");
 	return applyV(exp, vi, symexp);
 }
 static obj Log(obj vi){
-	obj arg= req_one(vi);
-	return applyV(log, arg, nil);
+	return applyV(log, vi, nil);
 }
 static obj Sqrt(obj vi){
 	return applyV(sqrt, vi, nil);
@@ -1184,7 +1186,8 @@ struct funcbind infnbind[] = {	//internal function bind
 	
 	{"max",	max	},
 	{"min",	min	},
-	{"floor",Floor	},
+	{"floor",floor},
+	{"ceil",ceil},
 	{"abs",	Abs	},
 	{"sin",	Sin	},
 	{"cos",	Cos	},
