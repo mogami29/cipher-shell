@@ -699,15 +699,13 @@ obj uMinus0(obj v){	//non-releasing
 	case tDblAr2:
 		uda2(rr) = multDM(-1, uda2(v));	break;
 	default:
-		print(v);
-		error("uMinus: not defined to that type");
+		return nil;
 	}
 	return rr;
 }
 
-obj uMinus(obj v){	//releasing
+obj uMinus(obj v){	//non-releasing
 	obj rr=uMinus0(v);
-	release(v);
 	return rr;
 }
 
@@ -823,7 +821,6 @@ obj divide(obj lt, obj rt){
         release(rt);
         return v;
     }
-    assert(0);
     return nil;
 }
 

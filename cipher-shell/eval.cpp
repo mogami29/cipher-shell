@@ -94,8 +94,8 @@ while(vrInt(LT(x, e))){
 		myPrintf(">> ");
 		print(rr);
 		release(rr);
+		scroll();
 	}
-    scroll();
 }
 
 void dispose_interpreter(Interpreter interpreter){
@@ -193,7 +193,7 @@ static obj func_def(obj name, obj params, obj expr) {
 		obj (*fn)(obj) = searchFunc(name, infnbind);
 		if(fn) let(func, tag(fn));
 	}
-	list lam = list3(retain(params), retain(expr), nil);
+	list lam = list3(retain(params), retain(expr), retain(env));
     if(*func){
         if(type(*func)==tClosure){			// free if complete overload, in the future
             lam = merge(lam, retain(ul(*func)));
@@ -375,9 +375,9 @@ obj udef_op0(obj ope, obj v){
 	assert(type(lamb)==tClosure);
 	list ll = seek_lamb(ul(lamb), v);
 	if(! ll) {
-		release(v);
 		return nil;
 	}
+	if(type(first(ll))==tInternalFn) error("user-defined operator not defined for the type.");
 	obj vars = Assoc();
 	bind_vars(&vars, first(ll), v);
 	push(env);
@@ -916,9 +916,9 @@ ev:	assert(!! exp);
 	case tArray:
 		return map_obj(eval, exp);
 	case tAnd:
-		return  prod_eval(ul(exp), mult);
+		return prod_eval(ul(exp), mult);
 	case MULT:
-		return  prod_eval(ul(exp), mult);
+		return prod_eval(ul(exp), mult);
 	case ARITH:
 		return prod_eval(ul(exp), add);
 	case POW:
@@ -939,7 +939,13 @@ ev:	assert(!! exp);
 		}
 		return eval_symbol(exp);
 	case tMinus:
-		return  uMinus(eval(uref(exp)));
+		lt = eval(uref(exp));
+		rr = uMinus(lt);	// releasing
+		if(rr) {release(lt); return rr;}
+		static obj symumn = Symbol("-");
+		rr = udef_op0(symumn, lt);
+		if(rr) {release(lt); return rr;}
+		error("uMinus: not defined to that type");
 	case tReturn:
 		if(! uref(exp)) return encap(tSigRet, nil);
 		return  encap(tSigRet, eval(uref(exp)));
@@ -1004,6 +1010,9 @@ ev:	assert(!! exp);
 		lt = car(exp);
 		if(type(lt)==tOp){
 			return func_def(ult(lt), urt(lt), cdr(exp));
+		} else if(type(lt)==tMinus){
+			static obj symumn = Symbol("-");
+			return func_def(symumn, uref(lt), cdr(exp));
 		} else return do_assign(lt, eval(cdr(exp)));
 	case tIf:
 		rr = eval(em0(exp));

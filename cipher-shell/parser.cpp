@@ -366,7 +366,10 @@ obj aexp(){
 	else if(get('-')) sign = -1;
 	rt=mExp();
 	op=readToken();
-	if( op!='+' && op!='-' && sign == 1) return rt;
+	if( op!='+' && op!='-'){
+		if(sign == 1) return rt;
+		else return encap(tMinus, rt);
+	}
 	list rl=phi();
 	while(1){
 		if(sign==-1) rt=encap(tMinus, rt);
