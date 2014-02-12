@@ -41,12 +41,12 @@ obj alloc(){
 }
 
 void* value::operator new(size_t size){
-	assert(size == MINALLOC);
+	assert(size <= MINALLOC);
 	return alloc();
 }
 
 void value::operator delete(void* v, size_t size){
-	assert(size == MINALLOC);
+	assert(size <= MINALLOC);
 	cdr((value*)v) = pool;
 	pool = (value*)v;
 }
@@ -192,12 +192,16 @@ arr* cArray(obj v[], int n){
 	uar(r).v = v;
 	return r;
 }
+list_::list_(ValueType t, node<obj>* l){
+	type = t;
+	list = l;
+}/*
 list_* render(ValueType type, list l){
 	list_* r = (list_*)alloc();
 	r->type = type;
 	ul(r) = l;
 	return r;
-}
+}*/
 obj encap(ValueType t, obj v){
 	obj rr = alloc();
 	rr->type = t;
@@ -287,6 +291,9 @@ inline void free_v(obj v){
 		break;
 	case tHash:
 		delete (hash*)uhash(v);
+		break;
+	case tCanvas:
+		delete v;
 		break;
 	default:
 		if(v->type>tLast){ //user defined types

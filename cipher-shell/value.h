@@ -214,7 +214,7 @@ public:
 class list_: public value {
 public:
 	list		list;
-	int size();
+	list_(ValueType type, node<obj>* l);
 };
 #define ul(ex)	(((list_*)ex)->list)
 //inline List& ul(obj ex){return ex->u.list;}
@@ -280,7 +280,7 @@ obj intArray(int n);
 arr* aArray(int n);
 arr* cArray(obj v[], int n);
 obj vector(int n);
-list_* render(ValueType type, list l);
+inline list_* render(ValueType type, list l){return new list_(type, l);}
 inline list_* create(ValueType t, list l){return render(t, l);}
 obj encap(ValueType t, obj v);
 list_* List2v(list l);
