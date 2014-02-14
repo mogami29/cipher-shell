@@ -511,9 +511,14 @@ char* canvas2eps(size_t* n);
 void new_canvas();
 
 static obj draw_line(obj vi){	// array of (x,y)
-	arr* v = map2arr(toDblArr, vi);
-	for(int i=0; i < size(v); i++) if(size((*v)[i]) != 2) error("each point must be a 2-element vector");
-	gr_line* l = new gr_line(v, line_width);
+	arr* pp = map2arr(toDblArr, vi);
+	for(int i=0; i < size(pp); i++){
+		obj v = (*pp)[i];
+		if(size(v) != 2) error("each point must be a 2-element vector");
+		double* pt = udar(v).v;
+		if(!isfinite(pt[0]) || !isfinite(pt[1])) {myPrintf("warning: line with NaN/inf not drawn."); return nil;}
+	}
+	gr_line* l = new gr_line(pp, line_width);
 	addGrObj(l);
 	return nil;
 }
@@ -528,7 +533,8 @@ static obj eps(obj fn){
 }
 
 static obj new_canvas(obj v){
-	if(v) error("no argument expected.");
+	//if(v) error("no argument expected.");
+	new_canvas();
 	return nil;
 }
 #endif
@@ -1172,8 +1178,8 @@ struct funcbind infnbind[] = {	//internal function bind
 
 	{"spvec",	SpVec	},
 	{"sparse",	Sparse},
-	{"hash",	Hash	},
-	{"inv",	inv	},	// in value.c
+	{"hash"	,	Hash	},
+	{"inv"	,	inv	},	// in value.c
 #ifdef GUI
 	{"image",	image},
 	{"cimg",	CImg	},
