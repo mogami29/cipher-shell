@@ -431,7 +431,7 @@ obj eval_curry(obj exp, obj vars) {	// envÇÕÇ¢Ç‹é¿çsíÜÇÃ
 	return strip_return(rr);
 /**/}
 
-obj macro_exec(obj lt, obj rt) {		// not yet
+obj macro_exec1(obj lt, obj rt) {		// not yet
 	assert(type(lt)==tSyntaxLam);
 	list ll = ul(lt);
 	obj vars = Assoc();
@@ -447,7 +447,7 @@ obj macro_exec(obj lt, obj rt) {		// not yet
 	release(pop(&macro_env));
 	return rr;
 }
-obj macro_exec0(obj lt, obj rt) {
+obj macro_exec(obj lt, obj rt) {
 	assert(type(lt)==tSyntaxLam);
 	list ll = ul(lt);
 	obj vars = Assoc();
@@ -457,7 +457,7 @@ obj macro_exec0(obj lt, obj rt) {
 	push(env);
 	env = nil;
 	obj el =  subs(second(ll), &vars);
-	print(el);  scroll();
+	//print(el);  scroll();
 	env = pop(&is);
 	release(vars);	// ÇøÇÂÇ¡Ç∆ïsà¿
 	obj rr = exec(el);
@@ -931,8 +931,8 @@ ev:	assert(!! exp);
 		if( macromode) {
 			if(obj rr = search_assoc(car(macro_env), exp)){
 				macromode = false;
+				// macro lexical scope should be pushed to the stack here
 				rr = exec(rr);
-			//	rr = eval(rr);
 				macromode = true;
 				return rr;
 			}
@@ -971,10 +971,7 @@ ev:	assert(!! exp);
 		case tInternalFn:
         case tClosure:
 			rt = eval(urt(exp));
-//for(int i=0; i<1e+6; i++){
 			rr = eval_function(lt, rt);
-		//	release(rt);
-//release(rr); } rr=nil;
 			break;
         default:
 			rt = eval(urt(exp));
@@ -1022,7 +1019,7 @@ ev:	assert(!! exp);
 		} else {
 			rr = em2(exp);
 		}
-		return exec(rr);
+		return eval(rr);
 	case tWhile:
 		for(;;) {
 			rr = eval(car(exp));
@@ -1115,6 +1112,11 @@ nex:		return operate(tAssign, vp, subs0(cdr(v), vars));
 		assert(0);
 	case tInd:
 	case tWhile:
+		{
+		obj st = subs0(cdr(v), vars);
+		if(type(st)==LIST) st->type = tExec;
+		return operate(v->type, subs0(car(v), vars), st);
+		}
 	case tOp:
 		return operate(v->type, subs0(car(v), vars), subs0(cdr(v), vars));
 	case INT:
