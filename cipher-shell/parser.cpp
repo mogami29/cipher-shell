@@ -134,7 +134,7 @@ obj parseString(char** str){
 		rr = nil;
 	}
 	*str=ptr;
-	if(*ptr!=NUL && next_token!='\n') myPrintf("unrecognized token '%d'.", next_token);
+//	if(*ptr!=NUL && next_token!='\n') myPrintf("unrecognized token '%d'.", next_token);
 	return rr;
 }
 /* 
@@ -309,7 +309,7 @@ obj ifExp(){
 	if(!get('(')) parse_error("if:");
 	obj cond=andExp();
 	if(!get(')')) parse_error("if:");
-	thenc= statement();
+	thenc = statementPseudoList();
 	get('\n') ;
 	if(get(ELSE)){
 		elsec = statementPseudoList();
