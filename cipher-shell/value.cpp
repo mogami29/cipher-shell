@@ -41,12 +41,12 @@ obj alloc(){
 }
 
 void* value::operator new(size_t size){
-	assert(size <= MINALLOC);
+	if(size > MINALLOC) return ::operator new(size);
 	return alloc();
 }
 
 void value::operator delete(void* v, size_t size){
-	assert(size <= MINALLOC);
+	if(size > MINALLOC){::operator delete(v); return;}
 	cdr((value*)v) = pool;
 	pool = (value*)v;
 }
@@ -668,7 +668,14 @@ DblArray multAA(DblArray *v1, DblArray *v2){
 	rv.v=v;
 	return rv;
 }
-
+double iprod(DblArray v1, DblArray v2){
+	double r = 0;
+	assert(v1.size==v2.size);
+	for(int i=0; i < v1.size; i++){
+		r += v1.v[i] * v2.v[i];
+	}
+	return r;
+}
 //--------------------------------------------------
 
 

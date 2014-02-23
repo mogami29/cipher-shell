@@ -233,7 +233,7 @@ public:
 
 class gr {
 public:
-	virtual void drawAt(float x, float y){}
+	virtual void drawAt(float x, float y, class canvas* cv){}
 };
 
 class gr_line: public gr {
@@ -242,15 +242,34 @@ public:
 	arr*	pts;
 	gr_line(arr* pts, float width):pts(pts),width(width){}
 	~gr_line(){release(pts);}
-	void drawAt(float x, float y);
+	void drawAt(float x, float y, class canvas* cv);
+};
+class gr_line3d: public gr {
+public:
+	float	width;
+	arr*	pts;
+	gr_line3d(arr* pts, float width):pts(pts),width(width){}
+	~gr_line3d(){release(pts);}
+	void drawAt(float x, float y, class canvas* cv);
 };
 
 class canvas: public value {
 public:
 	array<gr*> grs;
-	canvas(){type=tCanvas;}
+	DblArray cam_pos;
+	canvas(){
+		type = tCanvas;
+		cam_pos.size = 3;
+		cam_pos.v = new double[3];
+		cam_pos.v[0] = 1;
+		cam_pos.v[1] = 2;
+		cam_pos.v[2] = 2;
+	}
+	~canvas(){
+		delete cam_pos.v;
+	}
 };
-static_assert(sizeof(canvas)<=sizeof(opr), "");
+//static_assert(sizeof(canvas)<=sizeof(opr), "");
 
 
 inline ValueType type(ref v) {return v->type;};
@@ -263,13 +282,11 @@ inline ValueType type(ref v) {return v->type;};
 	return r;
 }//*/
 obj alloc();
-//obj Null();
 obj Assoc();
 obj Token(int i);
 double v2Double(obj v);	//cast to double
 char* copyString(const char* str);
 str_* cval(char* str);	// taking
-//inline obj String2v(const char* s){return val(copyString(s));}
 obj cString(const char* st, const char* en);
 obj aString(int n);	//alloc string
 obj Symbol(const char* s);
@@ -280,7 +297,7 @@ obj intArray(int n);
 arr* aArray(int n);
 arr* cArray(obj v[], int n);
 obj vector(int n);
-inline list_* render(ValueType type, list l){return new list_(type, l);}
+inline list_* render(ValueType t, list l){return new list_(t, l);}
 inline list_* create(ValueType t, list l){return render(t, l);}
 obj encap(ValueType t, obj v);
 list_* List2v(list l);
@@ -295,7 +312,7 @@ void print(obj v);
 
 obj inv(obj v);	// in matrix.c
 
-void 	set(DblArray* a, int i, double d);
+void set(DblArray* a, int i, double d);
 obj	add(obj lt, obj r);
 obj	uMinus(obj left);
 obj	divide(obj lt, obj rt);
@@ -340,3 +357,16 @@ inline obj op(obj lt, obj rt){
 	r->string = str;	
 	return (obj)r;
 }*/
+
+double iprod(DblArray v1, DblArray v2);
+DblArray multAA(DblArray *v1, DblArray *v2);
+DblArray multDV(double d1, DblArray v2);
+inline DblArray operator*(DblArray v1, DblArray v2){return multAA(&v1, &v2);}
+inline DblArray operator*(double d1, DblArray v2){return multDV(d1, v2);}
+inline DblArray operator*(DblArray v1, double d2){return multDV(d2, v1);}
+inline DblArray operator/(DblArray v1, double d2){return multDV(1/d2, v1);}
+DblArray addVV(DblArray v1, DblArray v2, int plusminus);
+DblArray addDA(double d1, DblArray v2, int plusminus);
+inline DblArray operator-(DblArray v1, DblArray v2){return addVV(v1, v2, -1);}
+inline DblArray operator-(double d1, DblArray v2){return addDA( d1, v2, -1);}
+inline DblArray operator-(DblArray v1, double d2){return addDA(-d2, v1, +1);}

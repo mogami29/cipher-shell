@@ -31,7 +31,7 @@ static obj createDSeries(double d){
 static obj ser(obj v){
 	if(type(v) == tDouble) return createDSeries(udbl(v));
 	if(type(v) == INT) return createDSeries(uint(v));
-	error("ser: scalar nomi.");
+	error("ser: only scalar.");
 	return nil;
 }
 
@@ -1124,11 +1124,6 @@ static bool is_assinable(val& x, val X, int i){
 }
 #define FOR(x, X) for(int i=0; is_assinable(x, X, i); i++)	// I must not be a right value
 val::val():a(nil){}
-DblArray multAA(DblArray *v1, DblArray *v2);
-DblArray multDV(double d1, DblArray v2);
-inline DblArray operator*(DblArray v1, DblArray v2){return multAA(&v1, &v2);}
-inline DblArray operator*(double d1, DblArray v2){return multDV(d1, v2);}
-inline DblArray operator*(DblArray v1, double d2){return multDV(d2, v1);}
 static double sum(DblArray v){
 	double s = 0;
 	for(int i=0; i<v.size; i++) s += v.v[i];
