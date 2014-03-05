@@ -218,7 +218,7 @@ void write(char* str, long bytes, obj fileName){
     fp = fopen(fn, "w");        // better "wb"?
     free(fn);
 #else
-    fp = fopen(ustr(fileName), "r");
+    fp = fopen(ustr(fileName), "w");
 #endif
 	if(fp == NULL) error("Cannot open the file.");
 	
@@ -1111,18 +1111,23 @@ static val iser(int step){	// duplicate of iser(obj)
 	for(int i=0; i<step; i++) uar(rr).v[i]=Int(i);
 	return (val)rr;
 }
+double vrDbl(obj v){	// value-release to Double, move to value.cpp
+	assert(type(v)==tDouble);
+	double d = udbl(v);
+	release(v);
+	return d;
+}
 inline val operator*(float a, val b){
 	return (val)mult(val(a), b);
 }
 inline val operator+(float a, val b){
 	return (val)add(val(a), b);
 }
-static int iterator_begin(){ return 0;}
-static bool is_assinable(val& x, val X, int i){
-//	if(i<size(X)){x = (val)ind(X, i); return true;}
+static bool assign(double& x, val X, int i){
+	if(i<size(X)){x = vrDbl(ind(X, i)); return true;}
 	return false;
 }
-#define FOR(x, X) for(int i=0; is_assinable(x, X, i); i++)	// I must not be a right value
+#define For(x, X) for(int i=0; assign(x, X, i); i++)	// X must not be a right value
 val::val():a(nil){}
 static double sum(DblArray v){
 	double s = 0;
@@ -1142,8 +1147,8 @@ static val ser(float a, float b, int n){	// return val_arr in the future
 static obj hoge(obj v){		// static-cipher
 #ifdef GUI
 	val S = ser(-2.0, 2.0, 20);
-	val x, y;		// try making them double
-	FOR(x, S) FOR(y, S) {
+	double x, y;
+	For(x, S) For(y, S) {
 //		DblArray vi = el(x, y) - el(x, y);
 //		draw_line(vi);
 	}
@@ -1238,9 +1243,9 @@ struct funcbind infnbind[] = {	//internal function bind
 	{"op"	,	Op	},
 	{"lt"	,	lt	},
 	{"rt"	,	rt	},
-	{"add",	Add	},
-	{"arg",	Arg	},
-	{"",nil}
+	{"add"	,	Add	},
+	{"arg"	,	Arg	},
+	{""		,nil}
 };
 
 obj (*searchFunc (obj id, struct funcbind fnbind[]))(obj){
